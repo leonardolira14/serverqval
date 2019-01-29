@@ -41,3 +41,5 @@ $route["deleteask"]="pregunta/delete";
 $route["saveask"]="pregunta/save";
 $route["getresumen"]="resumen/getresumen";
 $route["getdetailsresumen"]="resumen/getdetailstable";
+$route["downloaddetall"]="resumen/detallessvg";
+$route["downloadresumen"]="resumen/resumensvg";

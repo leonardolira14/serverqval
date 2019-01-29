@@ -1,5 +1,24 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+if(!function_exists("converter_cvs")){
+	//convertir a cvs
+	function converter_cvs($array,$titulo,$cabezeras){
+		$output=fopen("php://output", 'W')or die("Can't open php://output");
+		header('Content-Encoding: UTF-8');
+    	header('Content-Type: text/csv; charset=utf-8' );
+		header("Content-Disposition:attachment;filename=".$titulo.".csv"); 
+		header('Content-Transfer-Encoding: binary');
+	 	fputs( $output, "\xEF\xBB\xBF" ); 
+		fputcsv($output, $cabezeras);
+ 
+		foreach($array as $pregunta) {
+		    fputcsv($output,$pregunta);
+		}
+		fclose($output) or die("Can't close php://output");
+		}
+}
+
 if(!function_exists("_compracion"))
 {
 		function _comparacion($numero1,$numero2)

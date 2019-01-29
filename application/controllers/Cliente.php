@@ -39,13 +39,13 @@ class Cliente extends REST_Controller
 	}
 	public function save_post(){
 		$datos=$this->post();
-		$_data["ok"]=$this->Model_Cliente->save($datos["IDEmpresa"],$datos["Nombre"],$datos["NombreComercial"],$datos["RFC"],$datos["Municipio"],$datos["Direccion"],$datos["Puesto"],$datos["Tel"],$datos["EEstado"],$datos["Correo"],$datos["IDConfig"],$datos["Estado"],$datos["TPersona"],$datos["Apellidos"],$datos["Actipass"]);
+		$_data["ok"]=$this->Model_Cliente->save($datos["IDEmpresa"],$datos["Nombre"],$datos["NombreComercial"],$datos["RFC"],$datos["Municipio"],$datos["Direccion"],$datos["Puesto"],$datos["Tel"],$datos["EEstado"],$datos["Correo"],$datos["IDConfig"],$datos["Estado"],$datos["TPersona"],$datos["Apellidos"],$datos["Actipass"],$datos["Telcontact"]);
 		$this->response($_data);
 	}
 	public function update_put(){
 		$datos=$this->put();
 		
-		$_data["ok"]=$this->Model_Cliente->update($datos["IDCliente"],$datos["Nombre"],$datos["NombreComercial"],$datos["RFC"],$datos["Municipio"],$datos["Direccion"],$datos["Puesto"],$datos["Tel"],$datos["EEstado"],$datos["Correo"],$datos["IDConfig"],$datos["Estado"],$datos["TPersona"],$datos["Apellidos"],$datos["Actipass"]);
+		$_data["ok"]=$this->Model_Cliente->update($datos["IDCliente"],$datos["Nombre"],$datos["NombreComercial"],$datos["RFC"],$datos["Municipio"],$datos["Direccion"],$datos["Puesto"],$datos["Tel"],$datos["EEstado"],$datos["Correo"],$datos["IDConfig"],$datos["Estado"],$datos["TPersona"],$datos["Apellidos"],$datos["Actipass"],$datos["Telcontact"]);
 		$this->response($_data);
 
 	}

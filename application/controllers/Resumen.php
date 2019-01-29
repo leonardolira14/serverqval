@@ -21,6 +21,9 @@ class Resumen extends REST_Controller
     	$this->load->model("Model_Cuestionario");
     	$this->load->model("Model_Calificacion");
 	}
+	public function index_get(){
+		$this->response("my first api");
+	}
 	public function getresumen_post(){
 		$datos=$this->post();
 
@@ -82,5 +85,54 @@ class Resumen extends REST_Controller
 		$_data["tabledetaills"]=$this->Model_Calificacion->getdatacalificacion($_ID_Cuestionario,$fecha_Inicio,$fecha_Fin);
 		$this->response($_data);
 		
+	}
+	//funcion para descargar los resultados en svg
+	public function detallessvg_get(){
+		$datos=$this->get();
+		$fechas=explode('-',$datos["fech"]);
+		$fecha_Inicio=$fechas[0];
+		$fecha_Fin=$fechas[1];
+		$_ID_Cuestionario=$datos["num"];
+		$_data["tabledetaills"]=$this->Model_Calificacion->getdatacalificacion($_ID_Cuestionario,$fecha_Inicio,$fecha_Fin);
+		$titulos=array("IDCalificación","Fecha","Emisor","Receptor","Pregunta","Respuesta","Puntos");
+		// $this->response($titulos);
+		converter_cvs($_data["tabledetaills"],"Detalles_Resumen_Qval_".$datos["fech"],$titulos);
+		$this->response("");
+	}
+	public function resumensvg_get(){
+		$datos=$this->get();
+		$fechas=explode('-',$datos["fech"]);
+		$fecha_Inicio=$fechas[0];
+		$fecha_Fin=$fechas[1];
+		$_ID_cuestionario=$datos["num"];
+		//obtengo los datos del cuestionario;
+		$datoscuestionario=$this->Model_Cuestionario->getdata($_ID_cuestionario);
+		$detallesduestionario=$this->Model_Cuestionario->getdetalles($_ID_cuestionario);
+		$detallesemisor=$this->Model_Grupo->getgruposIDTipo($detallesduestionario["PerfilCalifica"],$detallesduestionario["TPEmisor"]);
+		$detallesreceptor=$this->Model_Grupo->getgruposIDTipo($detallesduestionario["PerfilCalificado"],$detallesduestionario["TPReceptor"]);
+		//ahora necesito obtener las veces que fue realizado ese cuestionario en esas fechas
+		$veces=$this->Model_Calificacion->numquestionary($_ID_cuestionario,$fecha_Inicio,$fecha_Fin);
+		$_data["detalles"]=array("Nombre"=>$datoscuestionario["Nombre"],"Status"=>($datoscuestionario["Status"]==="1")?"Activo":"Desactivado","Emisor"=>$detallesemisor["Nombre"],"Receptor"=>$detallesreceptor["Nombre"],"dialogo"=>comentario($fecha_Inicio,$fecha_Fin,$veces));
+		//DATOS PARA LLENAR LA TABLA
+		//obtengo la lista de preguntas
+		$litsa_preguntas=explode(",",$detallesduestionario["Cuestionario"]);
+		$tabla=[];
+		//ahora obtengo los detalles de cada pregunta y voy obtennieno las veces que han contestado esa pregunta
+		foreach ($litsa_preguntas as $nomenclatura) {
+			$detall=$this->Model_Pregunta->nomeclatura($nomenclatura);
+			$num_veces_contestadas=$this->Model_Calificacion->numcontestadas($detall["IDPregunta"],$fecha_Inicio,$fecha_Fin);
+			if($detall["Forma"]!="AB" || $detall!="ML"){
+			$num_de_respuestas_correctas=$this->Model_Calificacion->numcontestadascorrectas($detall["IDPregunta"],$fecha_Inicio,$fecha_Fin,$detall["Respuesta"]);
+			}else{
+				$num_de_respuestas_correctas="NA";
+			}
+
+			array_push($tabla,array("pregunta"=>$detall["Pregunta"],"respuesta"=>$detall["Respuesta"],"vecescontestada"=>$num_veces_contestadas,"numrespuestascorrectas"=>$num_de_respuestas_correctas));
+			
+		}
+		$titulos=array("Pregunta","Respuesta","# de veces contestada","# de respuestas correctas");
+		// $this->response($titulos);
+		converter_cvs($tabla,"Resumen_Qval".$datos["fech"],$titulos);
+		$this->response($_data["detalles"]["dialogo"]);
 	}
 }

@@ -18,12 +18,12 @@ class Model_Calificacion extends CI_Model
 	}
 	//funcion para saber cuantas veces contestaron esa pregunta de una fecha a otra
 	public function numcontestadas($_ID_Pregunta,$fecha1,$fecha2){
-		$respuesta=$this->db->select("count(*) as num")->From("tbcalificaciones")->join("detallecalificacion","detallecalificacion.IDValora=tbcalificaciones.IDCalificacion")->where("date(Fecha) between  '$fecha1' and '$fecha1' and IDPregunta=$_ID_Pregunta")->get();
+		$respuesta=$this->db->select("count(*) as num")->From("tbcalificaciones")->join("detallecalificacion","detallecalificacion.IDValora=tbcalificaciones.IDCalificacion")->where("date(Fecha) between  '$fecha1' and '$fecha2' and IDPregunta=$_ID_Pregunta")->get();
 		return $respuesta->result()[0]->num;
 	}
 	//funcion para obtern el numero e respuestas correctas
 	public function numcontestadascorrectas($_ID_Pregunta,$fecha1,$fecha2,$resuesta){
-	$respuesta=$this->db->select("count(*) as num")->From("tbcalificaciones")->join("detallecalificacion","detallecalificacion.IDValora=tbcalificaciones.IDCalificacion")->where("date(Fecha) between '$fecha1' and '$fecha1' and IDPregunta='$_ID_Pregunta' and detallecalificacion.Respuesta='$resuesta'")->get();
+	$respuesta=$this->db->select("count(*) as num")->From("tbcalificaciones")->join("detallecalificacion","detallecalificacion.IDValora=tbcalificaciones.IDCalificacion")->where("date(Fecha) between '$fecha1' and '$fecha2' and IDPregunta='$_ID_Pregunta' and detallecalificacion.Respuesta='$resuesta'")->get();
 	return $respuesta->result()[0]->num;
 	}
 	//funcion para obtener los datos de una cuestionario

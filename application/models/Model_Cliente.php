@@ -43,7 +43,7 @@ class Model_Cliente extends CI_Model
 	}
 	//funcion para agregar un nuevo cliente
 	public function save($_ID_Empresa,$_Razon,$_NombreC,$RFC,$_Municipo,$_Direccion,$_Puesto,$_Tel,
-		$_EEstado,$_Correo,$_IDConfig,$_Estado,$_TPersona,$_Apellidos,$_Actipass){
+		$_EEstado,$_Correo,$_IDConfig,$_Estado,$_TPersona,$_Apellidos,$_Actipass,$_Tel_contact){
 		$array=array("IDEmpresa"=>$_ID_Empresa,"Nombre"=>$_Razon,"NombreComercial"=>$_NombreC,"RFC"=>$RFC,"Municipio"=>$_Municipo,"Direccion"=>$_Direccion,"Puesto"=>$_Puesto,"Tel"=>$_Tel,"EEstado"=>$_EEstado,"Correo"=>$_Correo,"IDConfig"=>$_IDConfig,"Estado"=>$_Estado,"TPersona"=>$_TPersona,"Apellidos"=>$_Apellidos,"Actipass"=>$_Actipass,"Telcontact"=>$_Tel_contact);
 		return $this->db->insert("clientes",$array);
 	}

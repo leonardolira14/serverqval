@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'https://admyo.com/serverqval/';
-
+//$config['base_url'] = 'http://localhost/serverqval/';
 /*
 |--------------------------------------------------------------------------
 | Index File

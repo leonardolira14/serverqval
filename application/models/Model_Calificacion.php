@@ -27,8 +27,9 @@ class Model_Calificacion extends CI_Model
 	return $respuesta->result()[0]->num;
 	}
 	//funcion para obtener los datos de una cuestionario
-	public function getdatacalificacion($numC,$_fechaInicio,$_fechaFin){
-		$cuestionario=$this->ObtenerId($numC);
+	public function getdatacalificacion($_empresa,$numC,$_fechaInicio,$_fechaFin){
+		$cuestionario=$this->ObtenerId($_empresa,$numC);
+		
 		$sql=$this->db->select("*")->where("date(Fecha) between '$_fechaInicio' and '$_fechaFin' and IDCuestionario='$numC'")->get("tbcalificaciones");
 
 		if($sql->num_rows()===0){
@@ -68,15 +69,16 @@ class Model_Calificacion extends CI_Model
 		return $respuesta->row()->Nombre;
 	}
 	//funcion para obtener un cuestionario y separarlo este me devuelve los datos de las preguntas en un array
-	public function ObtenerId($numC){
+	public function ObtenerId($_empresa,$numC){
 		//primero obtengo el cuestionario
 		$sql=$this->db->select("Cuestionario")->where("IDCuestionario='$numC'")->get("detallecuestionario");
 		$cuestionario=explode(",",$sql->result()[0]->Cuestionario);
 		$ncuest=[];
 		foreach ($cuestionario as $pregunta) {
-			$sql=$this->db->select('*')->where("Nomenclatura='$pregunta'")->get("preguntas");
+			$sql=$this->db->select('*')->where("Nomenclatura='$pregunta' and IDEmpresa='$_empresa'")->get("preguntas");
 			array_push($ncuest,array("ID"=>$sql->result()[0]->IDPregunta,"Pregunta"=>$sql->result()[0]->Pregunta,"Puntos"=>$sql->result()[0]->Peso,"RespuestaPos"=>$sql->result()[0]->Respuesta,"Forma"=>$sql->result()[0]->Forma));
 		}
+
 		return $ncuest;
 	}
 }

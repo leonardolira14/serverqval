@@ -31,9 +31,12 @@ class Resumen extends REST_Controller
 		$fecha_Inicio=$fechas[0];
 		$fecha_Fin=$fechas[1];
 		$_ID_cuestionario=$datos["id"];
+		$_Empresa=$datos["empresa"];
 		//obtengo los datos del cuestionario;
 		$datoscuestionario=$this->Model_Cuestionario->getdata($_ID_cuestionario);
+
 		$detallesduestionario=$this->Model_Cuestionario->getdetalles($_ID_cuestionario);
+		
 		$detallesemisor=$this->Model_Grupo->getgruposIDTipo($detallesduestionario["PerfilCalifica"],$detallesduestionario["TPEmisor"]);
 		$detallesreceptor=$this->Model_Grupo->getgruposIDTipo($detallesduestionario["PerfilCalificado"],$detallesduestionario["TPReceptor"]);
 		//ahora necesito obtener las veces que fue realizado ese cuestionario en esas fechas
@@ -45,7 +48,7 @@ class Resumen extends REST_Controller
 		$tabla=[];
 		//ahora obtengo los detalles de cada pregunta y voy obtennieno las veces que han contestado esa pregunta
 		foreach ($litsa_preguntas as $nomenclatura) {
-			$detall=$this->Model_Pregunta->nomeclatura($nomenclatura);
+			$detall=$this->Model_Pregunta->nomeclatura($_Empresa,$nomenclatura);
 			$num_veces_contestadas=$this->Model_Calificacion->numcontestadas($detall["IDPregunta"],$fecha_Inicio,$fecha_Fin);
 			if($detall["Forma"]!="AB" || $detall!="ML"){
 			$num_de_respuestas_correctas=$this->Model_Calificacion->numcontestadascorrectas($detall["IDPregunta"],$fecha_Inicio,$fecha_Fin,$detall["Respuesta"]);
@@ -82,7 +85,8 @@ class Resumen extends REST_Controller
 		$fecha_Inicio=$fechas[0];
 		$fecha_Fin=$fechas[1];
 		$_ID_Cuestionario=$datos["id"];
-		$_data["tabledetaills"]=$this->Model_Calificacion->getdatacalificacion($_ID_Cuestionario,$fecha_Inicio,$fecha_Fin);
+		$_ID_Empresa=$datos["empresa"];
+		$_data["tabledetaills"]=$this->Model_Calificacion->getdatacalificacion($_ID_Empresa,$_ID_Cuestionario,$fecha_Inicio,$fecha_Fin);
 		$this->response($_data);
 		
 	}

@@ -13,8 +13,13 @@ class Model_Pregunta extends CI_Model
 	}
 	
 	//funcion para obtener los datos de una pregunta por su nomenclatura
-	public function nomeclatura($_nomenclatura){
-		$resp=$this->db->select("*")->where("Nomenclatura='$_nomenclatura'")->get("preguntas");
+	public function nomeclatura($_Empresa='',$_nomenclatura){
+		if($_Empresa!=""){
+			$resp=$this->db->select("*")->where("Nomenclatura='$_nomenclatura' and IDEmpresa='$_Empresa'")->get("preguntas");
+		}else{
+			$resp=$this->db->select("*")->where("Nomenclatura='$_nomenclatura'")->get("preguntas");
+		}
+		
 		return $resp->row_array();
 	}
 	//funcion para obtenr el numeor de pregunta

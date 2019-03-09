@@ -26,10 +26,11 @@ class Resumen extends REST_Controller
 	}
 	public function getresumen_post(){
 		$datos=$this->post();
-
+		//vdebug($datos);
 		$fechas=explode('-',$datos["fecha"]);
 		$fecha_Inicio=$fechas[0];
 		$fecha_Fin=$fechas[1];
+
 		$_ID_cuestionario=$datos["id"];
 		$_Empresa=$datos["empresa"];
 		//obtengo los datos del cuestionario;
@@ -41,6 +42,7 @@ class Resumen extends REST_Controller
 		$detallesreceptor=$this->Model_Grupo->getgruposIDTipo($detallesduestionario["PerfilCalificado"],$detallesduestionario["TPReceptor"]);
 		//ahora necesito obtener las veces que fue realizado ese cuestionario en esas fechas
 		$veces=$this->Model_Calificacion->numquestionary($_ID_cuestionario,$fecha_Inicio,$fecha_Fin);
+
 		$_data["detalles"]=array("Nombre"=>$datoscuestionario["Nombre"],"Status"=>($datoscuestionario["Status"]==="1")?"Activo":"Desactivado","Emisor"=>$detallesemisor["Nombre"],"Receptor"=>$detallesreceptor["Nombre"],"dialogo"=>comentario($fecha_Inicio,$fecha_Fin,$veces));
 		//DATOS PARA LLENAR LA TABLA
 		//obtengo la lista de preguntas

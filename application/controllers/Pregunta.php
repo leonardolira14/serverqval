@@ -47,7 +47,7 @@ class Pregunta extends REST_Controller
 			$_data["error"]=$error;
 			
 		}else{
-            $this->Model_Pregunta->save($datos["IDEmpresa"],$datos["Pregunta"],$datos["Peso"],$datos["Forma"],$datos["Frecuencia"],$datos["Peso"],$datos["Respuesta"]);
+            $this->Model_Pregunta->save($datos["IDEmpresa"],$datos["Pregunta"],'1',$datos["Forma"],$datos["Frecuencia"],$datos["Peso"],$datos["Respuesta"]);
 			$_data["ok"]=true;
 		}
 		$this->response($_data);

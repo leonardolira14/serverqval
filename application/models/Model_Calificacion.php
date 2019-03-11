@@ -14,6 +14,7 @@ class Model_Calificacion extends CI_Model
 	//fucnion para obtenr la cantidad de veces que fue contestatado esa pregunta
 	public function numquestionary($_ID_Cuestionario,$Fecha1,$Fecha2){
 		$resp=$this->db->select("count(*) as num")->where("date(Fecha) between '$Fecha1' and '$Fecha2' and IDCuestionario=$_ID_Cuestionario")->get("tbcalificaciones");
+		
 		return $resp->result()[0]->num;
 	}
 	//funcion para saber cuantas veces contestaron esa pregunta de una fecha a otra

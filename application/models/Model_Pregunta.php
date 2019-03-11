@@ -13,7 +13,7 @@ class Model_Pregunta extends CI_Model
 	}
 	
 	//funcion para obtener los datos de una pregunta por su nomenclatura
-	public function nomeclatura($_Empresa='',$_nomenclatura){
+	public function nomeclatura($_Empresa,$_nomenclatura){
 		if($_Empresa!=""){
 			$resp=$this->db->select("*")->where("Nomenclatura='$_nomenclatura' and IDEmpresa='$_Empresa'")->get("preguntas");
 		}else{

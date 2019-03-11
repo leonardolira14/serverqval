@@ -201,17 +201,9 @@ if(!function_exists("_comentario")){
 		$meses=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 		$_fecha_inicio=explode("/",$fechainicio);
 		$_fecha_fin=explode("/",$fechafin);
-		if((int)$_fecha_inicio[2]>12){
-			$_mes_inicio=$meses[(int)$_fecha_inicio[1]];	
-		}else{
-			$_mes_inicio=$meses[(int)$_fecha_inicio[2]];
-		}
-		if((int)$_fecha_fin[2]>12){
-			$_mes_fin=$meses[(int)$_fecha_fin[1]];	
-		}else{
-			$_mes_fin=$meses[(int)$_fecha_fin[2]];
-		}
 		
+		$_mes_inicio=$meses[(int)$_fecha_inicio[1]];	
+		$_mes_fin=$meses[(int)$_fecha_fin[1]];	
 		
 		$fecha1 = strtotime($fechainicio);
         $fecha2 = strtotime($fechafin);

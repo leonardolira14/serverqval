@@ -82,4 +82,38 @@ class Model_Calificacion extends CI_Model
 
 		return $ncuest;
 	}
+	public function delete_Calificacion_usario($IDusuario,$tipo){
+
+		if($tipo==="Emisor"){
+			$datos=$this->db->select("IDCalificacion")->where("IDEmisor='$IDusuario'")->get("tbcalificaciones");
+			foreach ($datos->result_array() as $IDValora) {
+				$Idvalora=$IDValora["IDCalificacion"];
+				$this->db->where("IDValora='$Idvalora'")->delete("detallecalificacion");
+			}
+			return $this->db->where("IDEmisor='$IDusuario'")->delete("tbcalificaciones");
+		}else{
+			$datos=$this->db->select("IDCalificacion")->where("IDReceptor='$IDusuario'")->get("tbcalificaciones");
+			foreach ($datos->result_array() as $IDValora) {
+				$Idvalora=$IDValora["IDCalificacion"];
+				$this->db->where("IDValora='$Idvalora'")->delete("detallecalificacion");
+			}
+			return $this->db->where("IDReceptor='$IDusuario'")->delete("tbcalificaciones");
+		}
+
+	}
+	public function delete_Calificacion_Custionario($IDCuestionario){
+
+		
+			$datos=$this->db->select("IDCalificacion")->where("IDCuestionario='$IDCuestionario'")->get("tbcalificaciones");
+			foreach ($datos->result_array() as $IDValora) {
+				$Idvalora=$IDValora["IDCalificacion"];
+				$this->db->where("IDValora='$Idvalora'")->delete("detallecalificacion");
+			}
+			return $this->db->where("IDCuestionario='$IDCuestionario'")->delete("tbcalificaciones");
+		
+
+	}
+	public function delete_Calificacion_pregunta($_ID_Pregunta){
+		$this->db->where("IDPregunta='$_ID_Pregunta'")->delete("detallecalificacion");
+	}
 }

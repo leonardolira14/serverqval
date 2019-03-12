@@ -18,7 +18,15 @@ if(!function_exists("converter_cvs")){
 		fclose($output) or die("Can't close php://output");
 		}
 }
+if(!function_exists("genereclabe"))
+{
+		function genereclabe()
+		{
+			$psswd =substr( md5(microtime()), 1, 8);
+			return $psswd;
+		}
 
+}
 if(!function_exists("_compracion"))
 {
 		function _comparacion($numero1,$numero2)
@@ -66,6 +74,39 @@ if(!function_exists("limpiar_array")){
 		foreach ($arry as $item) {
 			
 		}
+	}	
+}
+if(!function_exists("quitaritem")){
+	function quitaritem($array,$IDPregunta,$nomenclatura){
+		
+		foreach ($array as $key=>$items) {
+			if(is_numeric($items)){
+				if($items===$IDPregunta){
+					unset($array[$key]);
+				}
+			}else{
+				if($items===$nomenclatura){
+					unset($array[$key]);
+				}
+			}	
+		}		
+		$cadena="";
+		$i=1;
+		foreach ($array as $key=> $valor) {
+			
+			if($valor!= null && !empty($valor)){
+				$cadena.=$valor;
+				if ($i !== count($array)-1) {
+			       $cadena.=",";
+			       $i++;
+			    }
+			    
+			}
+			
+			
+		}
+		
+		return $cadena;
 	}	
 }
 if(!function_exists("_media_puntos"))

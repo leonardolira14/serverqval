@@ -11,6 +11,15 @@ class Model_Cliente extends CI_Model
 		parent::__construct();
 		$this->load->database();
 	}
+	//funcion para saber cuantos registros tiene ese cliente
+	public function getnumregistros($_ID_Cliente){
+		$emisor=$this->db->select("count(*) as numero")->where("IDEmisor='$_ID_Cliente'")->get("tbcalificaciones");
+		$receptor=$this->db->select("count(*) as numero")->where("IDReceptor='$_ID_Cliente'")->get("tbcalificaciones");
+
+		$total=(int)$emisor->row_array()["numero"]+(int)$receptor->row_array()["numero"];
+
+		return $total;
+	}
 	//funcion para saber le numero de clientes registrados de una empresa
 	public function numclientes($_ID_Empresa){
 		$respuesta=$this->db->select("count(*) as numclientes")->where("IDEmpresa='$_ID_Empresa'")->get("clientes");
@@ -51,6 +60,9 @@ class Model_Cliente extends CI_Model
 	public function updatestaus($_ID_Cliente,$_status){
 		$array=array("Estado"=>$_status);
 		return $this->db->where("IDCliente='$_ID_Cliente'")->update("clientes",$array);
+	}
+	public function delete_clie($_ID_Usuario){
+		$this->db->where("IDCliente='$_ID_Usuario'")->delete("clientes");
 	}
 	
 }

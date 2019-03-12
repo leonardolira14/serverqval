@@ -19,6 +19,8 @@ class Usuarios extends REST_Controller
     	$this->load->model("Model_Empresa");
     	$this->load->model("Model_General");
     	$this->load->model("Model_Grupo");
+    	$this->load->model("Model_Calificacion");
+    	$this->load->model("Model_Email");
 
 	}
 	public function index_post(){
@@ -53,6 +55,10 @@ class Usuarios extends REST_Controller
 			$_data["ok"]="La dirección de correo electrónico no existe";
 		}else{
 			//aqui envio el correo electronico que va a llevar las instrucciones 
+			$Clave=genereclabe();
+
+			$this->Model_Usuarios->update_clave($respuesta["IDUsuario"],$Clave);
+			$this->Model_Email->Recuperar_pass($respuesta["Correo"],$respuesta["Nombre"],$respuesta["Apellidos"],$respuesta["Usuario"],$Clave);
 			$_data["pass"]=1;
 			$_data["ok"]="Datos enviados al correo que esta registrado";
 		}
@@ -63,6 +69,11 @@ class Usuarios extends REST_Controller
 		$datos=$this->post();
 		$_data["usuarios"]=$this->Model_Usuarios->getAll($datos["0"]);
 		$_data["grupos"]=$this->Model_Grupo->getGrupos($datos["0"],"I");;
+		$this->response($_data);
+	}
+	public function numderegistristros_post(){
+		$datos=$this->post();
+		$_data["ok"]=$this->Model_Usuarios->getnumregistros($datos["IDUsuario"]);
 		$this->response($_data);
 	}
 	//funcion para guardar 
@@ -76,7 +87,7 @@ class Usuarios extends REST_Controller
 		$datos=$_GET["userdelete"];
 		$estado=$_GET["userstate"];
 		//$datos=$this->get();
-		$_data["ok"]=$this->Model_Usuarios->delete($datos,$estado);
+		$_data["ok"]=$this->Model_Usuarios->update_status($datos,$estado);
 		$this->response($_data);
 	}
 	//funcion para actualizar un usuario
@@ -90,6 +101,16 @@ class Usuarios extends REST_Controller
 	public function updatefunction_post(){
 		$datos=$this->post();
 		$_data["ok"]=$this->Model_Usuarios->update_function($datos["id"],$datos["funciones"]);
+		$this->response($_data);
+	}
+	public function borrar_post(){
+		$datos=$this->post();
+		
+		//elimino los registros de usaurio
+		$_data["ok"]=$this->Model_Usuarios->delete_user($datos["IDUsuario"]);
+		//elimino las calificaciones que se hallan echo
+		$this->Model_Calificacion->delete_Calificacion_usario($datos["IDUsuario"],"Emisor");
+		$this->Model_Calificacion->delete_Calificacion_usario($datos["IDUsuario"],"Receptor");
 		$this->response($_data);
 	}
 }

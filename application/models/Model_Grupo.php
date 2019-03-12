@@ -61,4 +61,7 @@ class Model_Grupo extends CI_Model
 		$array=array("Nombre"=>$_Nombre,"Tipo"=>$_Tipo,"Status"=>$_Status,"IDEmpresa"=>$_Empresa);
 		$this->db->insert("grupos",$array);
 	}
+	public function delete($_ID_Grupo){
+		$this->db->where("IDGrupo='$_ID_Grupo'")->delete("grupos");
+	}
 }

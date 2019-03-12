@@ -17,6 +17,20 @@ class Cliente extends REST_Controller
     	$this->load->model("Model_Cliente");
     	$this->load->model("Model_Grupo");
     	$this->load->model("Model_General");
+    	$this->load->model("Model_Calificacion");
+	}
+	public function borrar_post(){
+		$datos=$this->post();
+		$_data["ok"]=$this->Model_Cliente->delete_clie($datos["IDCliente"]);
+		//elimino las calificaciones que se hallan echo
+		$this->Model_Calificacion->delete_Calificacion_usario($datos["IDCliente"],"Emisor");
+		$this->Model_Calificacion->delete_Calificacion_usario($datos["IDCliente"],"Receptor");
+		$this->response($_data);
+	}
+	public function numregistro_post(){
+		$datos=$this->post();
+		$_data["ok"]=$this->Model_Cliente->getnumregistros($datos["IDCliente"]);
+		$this->response($_data);
 	}
 	public function getdat_post(){
 		$datos=$this->post();

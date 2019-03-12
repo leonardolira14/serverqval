@@ -11,7 +11,14 @@ class Model_Pregunta extends CI_Model
 		parent::__construct();
 		$this->load->database();
 	}
-	
+
+	public function borrar($_IDPregunta){
+		$this->db->where("IDPregunta='$_IDPregunta'")->delete("preguntas");
+	}
+	public function getnumregistros($IDPregunta){
+		$realizado=$this->db->select("count(*) as numero")->where("IDPregunta='$IDPregunta'")->get("detallecalificacion");
+		return (int)$realizado->row_array()["numero"];
+	}
 	//funcion para obtener los datos de una pregunta por su nomenclatura
 	public function nomeclatura($_Empresa,$_nomenclatura){
 		if($_Empresa!=""){
@@ -65,5 +72,10 @@ class Model_Pregunta extends CI_Model
 	}
 	public function delete($_ID_Pregunta,$_Status){
 		return $this->db->where("IDPregunta='$_ID_Pregunta'")->update("preguntas",array("Estado"=>$_Status));
+	}
+	///funcion detalles de una pregunta
+	public function detalle_pregunta($IDPregunta){
+		$respuesta=$this->db->select("*")->where("IDPregunta='$IDPregunta'")->get("preguntas");
+		return $respuesta->row_array();
 	}
 }

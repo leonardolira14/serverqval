@@ -17,7 +17,19 @@ class Cuestionario extends REST_Controller
 		$this->load->model("Model_Cuestionario");
 		$this->load->model("Model_Grupo");
 		$this->load->model("Model_Pregunta");
+		$this->load->model("Model_Calificacion");
 
+	}
+	public function borrar_post(){
+		$datos=$this->post();
+		$_data["ok"]=$this->Model_Cuestionario->borrar($datos["IDCuestionario"]);
+		$this->Model_Calificacion->delete_Calificacion_Custionario($datos["IDCuestionario"]);
+		$this->response($_data);
+	}
+	public function numregistros_post(){
+		$datos=$this->post();
+		$_data["ok"]=$this->Model_Cuestionario->getnumregistros($datos["IDCuestionario"]);
+		$this->response($_data);
 	}
 	//funcion para obtener todos los cuestionarios de una empresa
 	public function getall_post(){
@@ -64,6 +76,9 @@ class Cuestionario extends REST_Controller
 		$_data["ok"]=$this->Model_Cuestionario->updatedatelle($datos["IDCuestionario"],$lis,$datos["PerfilCalifica"][0],$datos["PerfilCalificado"][0],$emisor["Tipo"],$receptor["Tipo"]);
 		$this->response($_data);
 	}
+	
+
+	//funcion para modificar el estatus de un cuestioonario
 	public function delete_post(){
 		$datos=$this->post();
 		$_data["ok"]=$this->Model_Cuestionario->delete($datos["IDCuestionario"],$datos["status"]);

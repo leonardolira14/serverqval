@@ -24,10 +24,17 @@ class Grupos extends REST_Controller
 		$_data["externos"]=$this->Model_Grupo->getGrupos($datos[0],"E");
 		$this->response($_data);
 	}
-	//funcion para elimar un grupo
+	//funcion para desactivar un grupo
 	public function delete_post(){
 		$datos= $this->post();
 		$this->Model_Grupo->updatestatus($datos["grupo"],$datos["status"]);
+		$_data["ok"]=1;
+		$this->response($_data);
+	}
+	//funcion para eliminar este grupo
+	public function borrar_post(){
+		$datos=$this->post();
+		$this->Model_Grupo->delete($datos["IDGrupo"]);
 		$_data["ok"]=1;
 		$this->response($_data);
 	}

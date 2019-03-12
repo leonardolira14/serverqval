@@ -11,6 +11,11 @@ class Model_Cuestionario extends CI_Model
 		parent::__construct();
 		$this->load->database();
 	}
+	//funcion para obteno los registro de un cuestionario
+	public function getnumregistros($_ID_cuestionario){
+		$realizado=$this->db->select("count(*) as numero")->where("IDCuestionario='$_ID_cuestionario'")->get("tbcalificaciones");
+		return (int)$realizado->row_array()["numero"];
+	}
 	//funcion para obtenr los cuestionarios segun su estatus
 	public function getallquestionary($_empresa,$_status){
 		$respuesta=$this->db->select("*")->where("IDEmpresa='$_empresa' and Status='$_status'")->get("cuestionario");
@@ -61,6 +66,11 @@ class Model_Cuestionario extends CI_Model
 		$respuesta=$this->db->select("*")->where("IDCuestionario='$_ID_Cuestionario'")->get("cuestionario");
 		return $respuesta->row_array();
 	}
+	//funcion para solo actualizat la lista de preguntas de un curdstionario
+	public function updatedatelle_listapreguntas($_ID_Cuestionario,$_Lista){
+		$array=array("Cuestionario"=>$_Lista);
+		$this->db->where("IDCuestionario='$_ID_Cuestionario'")->update("detallecuestionario",$array);
+	}
 	//funcion para obtener los detalles
 	public function getdetalles($_ID_Cuestionario){
 		$resp=$this->db->select("*")->where("IDCuestionario='$_ID_Cuestionario'")->get("detallecuestionario");
@@ -79,5 +89,9 @@ class Model_Cuestionario extends CI_Model
 	public function  delete($_ID_Cuestionario,$_status){
 		return $this->db->where("IDCuestionario='$_ID_Cuestionario'")->update("cuestionario",array("Status"=>$_status));
 	}
+	public function borrar($_ID_Cuestionario){
+		return $this->db->where("IDCuestionario='$_ID_Cuestionario'")->delete("cuestionario");
+	}
+
 	
 }

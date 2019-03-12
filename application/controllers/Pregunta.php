@@ -67,7 +67,7 @@ class Pregunta extends REST_Controller
 			$error.="El campo Frecuencia no es valido;";
 			$bandera=true;
 		}
-		if($datos["Respuesta"]=="" && $datos["Forma"]=="AB"){
+		if($datos["Respuesta"]=="" && $datos["Forma"]!="AB"){
 			$error.="El campo Respuesta no es valido;";
 			$bandera=true;	
 		}

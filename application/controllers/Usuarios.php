@@ -23,9 +23,7 @@ class Usuarios extends REST_Controller
     	$this->load->model("Model_Email");
 
 	}
-	public function index_post(){
-		
-	}
+	
 	//funcion para le login de un usuario;
 	public function loginn_post()
 	{

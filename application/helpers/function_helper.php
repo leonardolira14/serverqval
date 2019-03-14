@@ -95,18 +95,13 @@ if(!function_exists("quitaritem")){
 		foreach ($array as $key=> $valor) {
 			
 			if($valor!= null && !empty($valor)){
-				$cadena.=$valor;
-				if ($i !== count($array)-1) {
-			       $cadena.=",";
-			       $i++;
-			    }
-			    
+				$cadena.=$valor.",";			    
 			}
 			
 			
 		}
-		
-		return $cadena;
+		$lis=substr($cadena,0,strlen($cadena)-1);
+		return $lis;
 	}	
 }
 if(!function_exists("_media_puntos"))

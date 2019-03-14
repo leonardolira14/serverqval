@@ -109,7 +109,7 @@ class Pregunta extends REST_Controller
 			$_data["error"]=$error;
 			
 		}else{
-			$this->Model_Pregunta->update($datos["IDPregunta"],$datos["Pregunta"],$datos["Peso"],$datos["Forma"],$datos["Frecuencia"],$datos["Peso"],$datos["Respuesta"]);
+			$this->Model_Pregunta->update($datos["IDPregunta"],$datos["Pregunta"],$datos["Estado"],$datos["Forma"],$datos["Frecuencia"],$datos["Peso"],$datos["Respuesta"]);
 			$_data["ok"]=true;
 		}
 		$this->response($_data);

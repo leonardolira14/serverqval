@@ -251,16 +251,16 @@ if(!function_exists("_comentario")){
 		$diferencia=$fecha2-$fecha1;
 		$dias=(( ( $diferencia / 60 ) / 60 ) / 24);
 		if((int)$dias===1){
-			$dias="1 dia";
+			$dias="1 día";
 		}else{
-			$dias="los ".$dias." dias";
+			$dias="los ".$dias." días";
 		}
 		if((int)$veces===1){
 			$veces="una 1 vez";
 		}else{
 			$veces=$veces." veces";
 		}
-		$cadena="Los resultados estan basados en $veces que fue contestado este cuestionario, en $dias que van del $_fecha_inicio[2] de $_mes_inicio del $_fecha_inicio[0] a $_fecha_fin[2] de $_mes_fin del $_fecha_fin[0]";
+		$cadena="Los resultados están basados en $veces que fue contestado este cuestionario, en $dias que van del $_fecha_inicio[2] de $_mes_inicio del $_fecha_inicio[0] a $_fecha_fin[2] de $_mes_fin del $_fecha_fin[0]";
 		return $cadena;
 
 	}

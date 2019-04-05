@@ -101,7 +101,6 @@ class Model_Cuestionario extends CI_Model
 		return $this->db->where("IDCuestionario='$_ID_Cuestionario'")->update("cuestionario",array("Status"=>$_status));
 	}
 	public function borrar($_ID_Cuestionario){
-		$this->db->where("IDCuestionario='$_ID_Cuestionario'")->delete("detallecuestionario");
 		return $this->db->where("IDCuestionario='$_ID_Cuestionario'")->delete("cuestionario");
 	}
 	//funcion para quitar a todos de un grupo

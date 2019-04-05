@@ -243,17 +243,18 @@ if(!function_exists("_comentario")){
 		$_fecha_inicio=explode("/",$fechainicio);
 		$_fecha_fin=explode("/",$fechafin);
 		
-		$_mes_inicio=$meses[(int)$_fecha_inicio[1]];	
-		$_mes_fin=$meses[(int)$_fecha_fin[1]];	
+		$_mes_inicio=$meses[(int)$_fecha_inicio[1]-1];	
+		$_mes_fin=$meses[(int)$_fecha_fin[1]-1];	
 		
 		$fecha1 = strtotime($fechainicio);
-        $fecha2 = strtotime($fechafin);
+		$fecha2 = strtotime($fechafin);
+		
 		$diferencia=$fecha2-$fecha1;
 		$dias=(( ( $diferencia / 60 ) / 60 ) / 24);
 		if((int)$dias===1){
 			$dias="1 día";
 		}else{
-			$dias="los ".$dias." días";
+			$dias="los ".round ($dias,0)." días";
 		}
 		if((int)$veces===1){
 			$veces="una 1 vez";
@@ -320,5 +321,16 @@ if(!function_exists("_is_respcorrect"))
 				}
 			}
 		}
-	}	
+		
 }
+if(!function_exists("docemeces"))
+			{
+					function docemeces(){
+						$fechas=[];
+							for($i=12;$i>=0;$i--){ 
+								array_push($fechas,date("Y-m",mktime(0,0,0,date("m")-$i,date("d"),date("Y"))));
+							} 
+							return $fechas;
+					}
+				}	
+			}

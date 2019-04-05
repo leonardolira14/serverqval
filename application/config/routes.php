@@ -50,6 +50,25 @@ $route["updatequestionary"]="cuestionario/update";
 $route["deletequestionary"]="cuestionario/delete";
 $route["numregisrosquestionary"]="cuestionario/numregistros";
 $route["borrarquestionary"]="cuestionario/borrar";
+$route["deleterespuestas"]="cuestionario/deleterespuestas";
+
+$route["addgroupquestionary"]="cuestionario/addgroup";
+$route["updategroupquestionary"]="cuestionario/updategroup";
+$route["deletegroupquestionary"]="cuestionario/deletegroup";
+$route["addcuesgroupquestionary"]="cuestionario/addcuesgrp";
+
+//nuevas rutas para el cuestionario
+$route["addquestionary"]="cuestionario/addcuestionario";
+$route["getdatosencuesta"]="cuestionario/getdatosencuesta";
+
+//fin de las nuevas ruras para el custionario
+
+
+$route["addcuesnotfquestionary"]="cuestionario/updatenotificacion";
+
+$route["addgrupoencuesta"]='cuestionario/upsategrupo';
+$route["addborradorencuesta"]='cuestionario/addborradorencuesta';
+
 
 $route["getallask"]="pregunta/getall";
 $route["updateask"]="pregunta/update";
@@ -57,6 +76,9 @@ $route["updatestatusask"]="pregunta/updatestatus";
 $route["saveask"]="pregunta/save";
 $route["numregistrospregunta"]="pregunta/numregistros";
 $route["deleteask"]="pregunta/delete";
+$route["getcategotia"]="pregunta/getcateria";
+$route["getcategoriask"]="pregunta/getpregutacat";
+$route['addplantilla']="pregunta/addplantilla";
 
 $route["getresumen"]="resumen/getresumen";
 $route["getdetailsresumen"]="resumen/getdetailstable";

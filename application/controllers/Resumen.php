@@ -46,18 +46,34 @@ class Resumen extends REST_Controller
 		$_data["detalles"]=array("Nombre"=>$datoscuestionario["Nombre"],"Status"=>($datoscuestionario["Status"]==="1")?"Activo":"Desactivado","Emisor"=>$detallesemisor["Nombre"],"Receptor"=>$detallesreceptor["Nombre"],"dialogo"=>comentario($fecha_Inicio,$fecha_Fin,$veces));
 		//DATOS PARA LLENAR LA TABLA
 		//obtengo la lista de preguntas
-		$litsa_preguntas=explode(",",$detallesduestionario["Cuestionario"]);
+		$litsa_preguntas= json_decode($detallesduestionario["Cuestionario"]);
+		
 		$tabla=[];
 		//ahora obtengo los detalles de cada pregunta y voy obtennieno las veces que han contestado esa pregunta
 		foreach ($litsa_preguntas as $nomenclatura) {
-			$detall=$this->Model_Pregunta->nomeclatura($_Empresa,$nomenclatura);
+			$detall=$this->Model_Pregunta->nomeclatura($nomenclatura);
 			$num_veces_contestadas=$this->Model_Calificacion->numcontestadas($detall["IDPregunta"],$fecha_Inicio,$fecha_Fin);
-			if($detall["Forma"]!="AB" || $detall!="ML"){
-			$num_de_respuestas_correctas=$this->Model_Calificacion->numcontestadascorrectas($detall["IDPregunta"],$fecha_Inicio,$fecha_Fin,$detall["Respuesta"]);
-			}else{
-				$num_de_respuestas_correctas="NA";
-			}
+			switch ($detall["Forma"]) {
+				case "AB":
+				case "MLC":
+				case "NUMERO":
+				case "F/H":
+				case "FECHA":
+				case "HORA":
+				case "DESLIZA":
+				case "CARGA":
+				case "START":
+					$num_de_respuestas_correctas="NA";
+					break;
+				
+				case "ML":
+				case "SI/NO":
+				case "SI/NO/NA":
+				case "SI/NO/NS":
+					$num_de_respuestas_correctas=$this->Model_Calificacion->numcontestadascorrectas($detall["IDPregunta"],$fecha_Inicio,$fecha_Fin,$detall["Respuesta"]);
+					break;
 
+			}
 			array_push($tabla,array("pregunta"=>$detall["Pregunta"],"respuesta"=>$detall["Respuesta"],"vecescontestada"=>$num_veces_contestadas,"numrespuestascorrectas"=>$num_de_respuestas_correctas));
 			
 		}
@@ -128,19 +144,34 @@ class Resumen extends REST_Controller
 		$_data["detalles"]=array("Nombre"=>$datoscuestionario["Nombre"],"Status"=>($datoscuestionario["Status"]==="1")?"Activo":"Desactivado","Emisor"=>$detallesemisor["Nombre"],"Receptor"=>$detallesreceptor["Nombre"],"dialogo"=>comentario($fecha_Inicio,$fecha_Fin,$veces));
 		//DATOS PARA LLENAR LA TABLA
 		//obtengo la lista de preguntas
-		$litsa_preguntas=explode(",",$detallesduestionario["Cuestionario"]);
+		$litsa_preguntas=json_decode($detallesduestionario["Cuestionario"]);
 		$tabla=[];
 		//ahora obtengo los detalles de cada pregunta y voy obtennieno las veces que han contestado esa pregunta
 		foreach ($litsa_preguntas as $nomenclatura) {
-			$detall=$this->Model_Pregunta->nomeclatura($_ID_Empresa,$nomenclatura);
+			$detall=$this->Model_Pregunta->nomeclatura($nomenclatura);
 			$num_veces_contestadas=$this->Model_Calificacion->numcontestadas($detall["IDPregunta"],$fecha_Inicio,$fecha_Fin);
-			if($detall["Forma"]!="AB" || $detall!="ML"){
-			$num_de_respuestas_correctas=$this->Model_Calificacion->numcontestadascorrectas($detall["IDPregunta"],$fecha_Inicio,$fecha_Fin,$detall["Respuesta"]);
-			}else{
-				$num_de_respuestas_correctas="NA";
-			}
+			switch ($detall["Forma"]) {
+				case "AB":
+				case "MLC":
+				case "NUMERO":
+				case "F/H":
+				case "FECHA":
+				case "HORA":
+				case "DESLIZA":
+				case "CARGA":
+				case "START":
+					$num_de_respuestas_correctas="NA";
+					break;
+				
+				case "ML":
+				case "SI/NO":
+				case "SI/NO/NA":
+				case "SI/NO/NS":
+					$num_de_respuestas_correctas=$this->Model_Calificacion->numcontestadascorrectas($detall["IDPregunta"],$fecha_Inicio,$fecha_Fin,$detall["Respuesta"]);
+					break;
 
-			array_push($tabla,array("pregunta"=>$detall["Pregunta"],"respuesta"=>$detall["Respuesta"],"vecescontestada"=>$num_veces_contestadas,"numrespuestascorrectas"=>$num_de_respuestas_correctas));
+			}
+			array_push($tabla,array("pregunta"=>mb_convert_encoding($detall["Pregunta"],"UTF-8"),"respuesta"=>$detall["Respuesta"],"vecescontestada"=>$num_veces_contestadas,"numrespuestascorrectas"=>$num_de_respuestas_correctas));
 			
 		}
 		$titulos=array("Pregunta","Respuesta","# de veces contestada","# de respuestas correctas");

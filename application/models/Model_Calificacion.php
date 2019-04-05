@@ -9,6 +9,7 @@ class Model_Calificacion extends CI_Model
 	{
 		parent::__construct();
 		$this->load->database();
+		$this->load->model("Model_Pregunta");
 	}
 
 	//fucnion para obtenr la cantidad de veces que fue contestatado esa pregunta
@@ -32,7 +33,7 @@ class Model_Calificacion extends CI_Model
 		$cuestionario=$this->ObtenerId($_empresa,$numC);
 		
 		$sql=$this->db->select("*")->where("date(Fecha) between '$_fechaInicio' and '$_fechaFin' and IDCuestionario='$numC'")->get("tbcalificaciones");
-
+		//vdebug(	$sql->result());
 		if($sql->num_rows()===0){
 			return false;
 		}else{
@@ -41,25 +42,21 @@ class Model_Calificacion extends CI_Model
 			
 			$resumen=[];
 		    foreach ($veces as $key) {
-				foreach ($cuestionario as $pregunta) {
-					$datospregunta=$this->dettalles_pregunta_cuestionario($key->IDCalificacion,$pregunta["ID"]);
-					$emisor=$this->getname($key->IDEmisor,$key->TEmisor);
-					$receptor=$this->getname($key->IDReceptor,$key->TReceptor);
-					$fechas=explode(" ",$key->Fecha);
-					array_push($resumen,array("IDCalificacion"=>$key->IDCalificacion,"Fecha"=>$fechas[0],"Emisor"=>$emisor,"Receptor"=>$receptor,"Pregunta"=>$pregunta["Pregunta"],"Respuesta"=>$datospregunta["Respuesta"],"Puntos"=>$datospregunta["Calificacion"])); 
-
-					
-				}
+					foreach ($cuestionario as $pregunta) {
+						$datospregunta=$this->dettalles_pregunta_cuestionario($key->IDCalificacion,$pregunta["ID"]);
+						$emisor=$this->getname($key->IDEmisor,$key->TEmisor);
+						$receptor=$this->getname($key->IDReceptor,$key->TReceptor);
+						$fechas=explode(" ",$key->Fecha);
+						array_push($resumen,array("IDCalificacion"=>$key->IDCalificacion,"Fecha"=>$fechas[0],"Emisor"=>$emisor,"Receptor"=>$receptor,"Pregunta"=>$pregunta["Pregunta"],"Forma"=>$pregunta["Forma"],"Respuesta"=>$datospregunta["Respuesta"],"Puntos"=>$datospregunta["Calificacion"])); 	
+					}
 				
 			}
-
-			
 			return $resumen;
 		}
 	}
 	public function dettalles_pregunta_cuestionario($ID,$IDPregunta){
 		$sql=$this->db->select("Respuesta,Calificacion")->where("IDValora='$ID' and IDPregunta='$IDPregunta'")->get("detallecalificacion");
-		return $sql->result_array()[0];
+		return $sql->row_array();
 	}
 	public function getname($ID,$Tipo){
 		if($Tipo==="E"){
@@ -72,11 +69,13 @@ class Model_Calificacion extends CI_Model
 	//funcion para obtener un cuestionario y separarlo este me devuelve los datos de las preguntas en un array
 	public function ObtenerId($_empresa,$numC){
 		//primero obtengo el cuestionario
+		
 		$sql=$this->db->select("Cuestionario")->where("IDCuestionario='$numC'")->get("detallecuestionario");
-		$cuestionario=explode(",",$sql->result()[0]->Cuestionario);
+		
+		$cuestionario=json_decode($sql->result()[0]->Cuestionario);
 		$ncuest=[];
 		foreach ($cuestionario as $pregunta) {
-			$sql=$this->db->select('*')->where("Nomenclatura='$pregunta' and IDEmpresa='$_empresa'")->get("preguntas");
+			$sql=$this->db->select('*')->where("IDPregunta='$pregunta'")->get("tbpreguntas");
 			array_push($ncuest,array("ID"=>$sql->result()[0]->IDPregunta,"Pregunta"=>$sql->result()[0]->Pregunta,"Puntos"=>$sql->result()[0]->Peso,"RespuestaPos"=>$sql->result()[0]->Respuesta,"Forma"=>$sql->result()[0]->Forma));
 		}
 

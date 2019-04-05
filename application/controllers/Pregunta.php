@@ -17,6 +17,7 @@ class Pregunta extends REST_Controller
 		$this->load->model("Model_Pregunta");
 		$this->load->model("Model_Calificacion");
 		$this->load->model("Model_Cuestionario");
+		$this->load->model("Model_Grupo");
 	}
 	public function delete_post(){
 		$datos=$this->post();
@@ -118,5 +119,30 @@ class Pregunta extends REST_Controller
 		$datos=$this->post();
 		$_data["ok"]=$this->Model_Pregunta->delete($datos["id"],$datos["status"]);
 		$this->response($_data);
+	}
+
+	//funcion para obtener las categorias de las preguntas
+	public function getcateria_post(){
+		$datos=$this->post();
+		$_data["ok"]=$this->Model_Pregunta->getcategias($datos["IDEmpresa"]);
+		$_data["pinternos"]=$this->Model_Grupo->getGrupos($datos["IDEmpresa"],"I");
+		$_data["pexternos"]=$this->Model_Grupo->getGrupos($datos["IDEmpresa"],"E");
+		$this->response($_data);
+	}
+
+	//fucnion para obtener una preguntas de uuna categortia
+	public function getpregutacat_post(){
+		$datos=$this->post();
+		$_data["ok"]=$this->Model_Pregunta->getpregunta_categoria($datos["IDCategoria"]);
+		$this->response($_data);
+	}
+	//funcion para agregar una plantillas
+	public function addplantilla_post(){
+		$datos=$this->post();
+		$cuestionario=json_decode($datos["Datos"]);
+		$this->Model_Pregunta->add_plantilla($datos["IDEmpresa"],$datos["Nombre"],$datos["Datos"]);
+		$_data["ok"]=$this->Model_Pregunta->getcategias($datos["IDEmpresa"]);
+		$this->response($_data);
+	
 	}
 }

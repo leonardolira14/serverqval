@@ -34,6 +34,7 @@ class Grupos extends REST_Controller
 	//funcion para eliminar este grupo
 	public function borrar_post(){
 		$datos=$this->post();
+		
 		$this->Model_Grupo->delete($datos["IDGrupo"]);
 		$_data["ok"]=1;
 		$this->response($_data);
@@ -48,6 +49,7 @@ class Grupos extends REST_Controller
 	//funcion para agregar un nuevo grupo
 	public function add_post(){
 		$datos= $this->post();
+		
 		$this->Model_Grupo->addgrupo($datos["grupo"],$datos["nombregrupo"],$datos["tipog"],"1");
 		$_data["ok"]=1;
 		$this->response($_data);

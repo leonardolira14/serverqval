@@ -99,7 +99,7 @@ class Model_Pregunta extends CI_Model
 		return $array;
 	}
 
-	//funcion para obtener las categorias de las preguntas
+
 	public function getcategias($_IDEmpresa){
 		$respuesta=$this->db->query("(select * from tbcategoriaspreguntas where IDEmpresa='0') union  (select * from tbcategoriaspreguntas where IDEmpresa='$_IDEmpresa') order by Nombre asc");
 		return $respuesta->result_array();

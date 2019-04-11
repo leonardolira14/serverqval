@@ -15,11 +15,11 @@ class Model_Usuarios extends CI_Model
 
 	//funcion para para saber cuantos registros tengo de un usuario
 	public function getnumregistros($_ID_Usuario){
-		$emisor=$this->db->select("count(*) as numero")->where("IDEmisor='$_ID_Usuario'")->get("tbcalificaciones");
-		$receptor=$this->db->select("count(*) as numero")->where("IDReceptor='$_ID_Usuario'")->get("tbcalificaciones");
+		$emisor=$this->db->select("count(*) as numero")->where("IDEmisor='$_ID_Usuario' and TEmisor='I'")->get("tbcalificaciones");
+		$receptor=$this->db->select("count(*) as numero")->where("IDReceptor='$_ID_Usuario' and TReceptor='I'")->get("tbcalificaciones");
 
 		$total=(int)$emisor->row_array()["numero"]+(int)$receptor->row_array()["numero"];
-
+		
 		return $total;
 	}	
 	//funcion para obtener el numero de usuarios de una empresa
@@ -64,7 +64,7 @@ class Model_Usuarios extends CI_Model
 	
 	//funcion para obtener todos los usuarios de una empresa
 	public function getAll($_ID_Empresa){
-		$respuesta=$this->db->select("IDUsuario as Id,Nombre as nombre,Apellidos as apellido,IDEmpresa as empresa,Puesto,Usuario,Correo,Funciones as funciones,IDConfig as Config,Est as Estado")->where("IDEmpresa='$_ID_Empresa'")->get('usuario');
+		$respuesta=$this->db->select("IDUsuario as ID,Nombre,Apellidos,IDEmpresa,Puesto,Usuario,Correo,Funciones,IDConfig,Est as Estado,Imagen")->where("IDEmpresa='$_ID_Empresa'")->get('usuario');
 		if($respuesta->num_rows()===0){
 			return false;
 		}else{
@@ -72,8 +72,8 @@ class Model_Usuarios extends CI_Model
 		}	
 	}
 	//funcion para egregar un nuevo usuario
-	public function save($_ID_Empresa,$_Nombre,$_Apellido,$_Puesto,$_Correo,$_Configuracion,$_Funciones,$_Usuario){
-		$datos=array("IDEmpresa"=>$_ID_Empresa,"Nombre"=>$_Nombre,"Apellidos"=>$_Apellido,"Puesto"=>$_Puesto,"Correo"=>$_Correo,"IDConfig"=>$_Configuracion,"Funciones"=>$_Funciones,"Usuario"=>$_Usuario,"Est"=>1);
+	public function save($_ID_Empresa,$_Nombre,$_Apellido,$_Puesto,$_Correo,$_Configuracion,$_Funciones,$_Usuario,$_Imagen){
+		$datos=array("IDEmpresa"=>$_ID_Empresa,"Nombre"=>$_Nombre,"Apellidos"=>$_Apellido,"Puesto"=>$_Puesto,"Correo"=>$_Correo,"IDConfig"=>$_Configuracion,"Funciones"=>$_Funciones,"Usuario"=>$_Usuario,"Est"=>1,"Imagen"=>$_Imagen);
 		$this->db->insert("usuario",$datos);
 
 	}
@@ -86,8 +86,8 @@ class Model_Usuarios extends CI_Model
 		$this->db->where("IDUsuario='$_ID_Usuario'")->delete("usuario");
 	}
 
-	public function update($_ID_Usuario,$_Nombre,$_Apellido,$_Puesto,$_Correo,$_Configuracion,$_Funciones,$_Usuario){
-		$datos=array("Nombre"=>$_Nombre,"Apellidos"=>$_Apellido,"Puesto"=>$_Puesto,"Correo"=>$_Correo,"IDConfig"=>$_Configuracion,"Funciones"=>$_Funciones,"Usuario"=>$_Usuario);
+	public function update($_ID_Usuario,$_Nombre,$_Apellido,$_Puesto,$_Correo,$_Configuracion,$_Funciones,$_Usuario,$_Imagen){
+		$datos=array("Nombre"=>$_Nombre,"Apellidos"=>$_Apellido,"Puesto"=>$_Puesto,"Correo"=>$_Correo,"Imagen"=>$_Imagen,"IDConfig"=>$_Configuracion,"Funciones"=>$_Funciones,"Usuario"=>$_Usuario);
 		return $this->db->where("IDUsuario='$_ID_Usuario'")->update("usuario",$datos);
 	}
 	public function update_function($_ID_Usuario,$_funciones){

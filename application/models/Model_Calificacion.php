@@ -115,4 +115,13 @@ class Model_Calificacion extends CI_Model
 	public function delete_Calificacion_pregunta($_ID_Pregunta){
 		$this->db->where("IDPregunta='$_ID_Pregunta'")->delete("detallecalificacion");
 	}
+	//fucion para transferir las calificaciones de un usuario a otro
+	public function transferencia_de_calificaciones($_Emisor,$_Receptor,$_Tipo){
+		if($_Tipo==="Realizadas"){
+			return $this->db->where("IDEmisor='$_Emisor' and TEmisor='I'")->update("tbcalificaciones",array("IDEmisor"=>$_Receptor));
+		}
+		if($_Tipo==="Recibidas"){
+			return $this->db->where("IDReceptor='$_Emisor' and TReceptor='I'")->update("tbcalificaciones",array("IDReceptor"=>$_Receptor));
+		}
+	}
 }

@@ -76,8 +76,26 @@ class Usuarios extends REST_Controller
 	//funcion para guardar 
 	public function save_post(){
 		$datos=$this->post();
-		$_data["ok"]=$this->Model_Usuarios->save($datos["Empresa"],$datos["Nombre"],$datos["Apellidos"],$datos["Puesto"],$datos["Correo"],$datos["Configuracion"],$datos["functions"],$datos["Usuario"]);
-	 	$this->response($_data);
+		$datos=json_decode($datos["datos"]);
+		$_data["ok"]=$this->Model_Usuarios->save($datos->Empresa,$datos->Nombre,$datos->Apellidos,$datos->Puesto,$datos->Correo,$datos->Configuracion,$datos->functions,$datos->Usuario,$datos->Imagen);
+		
+		if(count($_FILES)!==0){
+			foreach ($_FILES as $key=> $nombre) {
+				if($key==="Imagen"){
+					$ruta='./assets/img/usuarios/avatar/';
+				}
+				
+				$rutatemporal=$nombre["tmp_name"];
+				$nombreactual=$nombre["name"];
+				
+				move_uploaded_file($rutatemporal, $ruta.$nombreactual);
+				//$this->create_thumbnail($nombreactual,$ruta,$key);
+				$this->Model_Empresa->updateimg($datos->Empresa,$nombreactual,$key);
+				
+			}
+			
+		} 
+		$this->response($_data);
 	}
 	//funcion para dar de baja un usario
 	public function deleteuser_delete(){
@@ -88,9 +106,23 @@ class Usuarios extends REST_Controller
 		$this->response($_data);
 	}
 	//funcion para actualizar un usuario
-	public function update_put(){
-		$datos=$this->put();
-		$_respuesta=$this->Model_Usuarios->update($datos["Id"],$datos["Nombre"],$datos["Apellidos"],$datos["Puesto"],$datos["Correo"],$datos["Configuracion"],$datos["functions"],$datos["Usuario"]);
+	public function update_post(){
+		$datos=$this->post();
+
+		$datos=json_decode($datos["datos"]);
+		$_respuesta=$this->Model_Usuarios->update($datos->Id,$datos->Nombre,$datos->Apellidos,$datos->Puesto,$datos->Correo,$datos->Configuracion,$datos->functions,$datos->Usuario,$datos->Imagen);
+		if(count($_FILES)!==0){
+			foreach ($_FILES as $key=> $nombre) {
+				if($key==="Imagen"){
+					$ruta='./assets/img/usuarios/avatar/';
+				}
+				$rutatemporal=$nombre["tmp_name"];
+				$nombreactual=$nombre["name"];
+				move_uploaded_file($rutatemporal, $ruta.$nombreactual);
+				//$this->create_thumbnail($nombreactual,$ruta,$key);
+				$this->Model_Empresa->updateimg($datos->Empresa,$nombreactual,$key);	
+			}
+		} 
 		$_data["ok"]=$_respuesta;
 		$this->response($_data);
 	}
@@ -110,4 +142,12 @@ class Usuarios extends REST_Controller
 		$this->Model_Calificacion->delete_Calificacion_usario($datos["IDUsuario"],"Receptor");
 		$this->response($_data);
 	}
+	public function transferircalificaciones_post(){
+		$datos=$this->post();
+		// primero cambio las calificaciones recibidas
+		$this->Model_Calificacion->transferencia_de_calificaciones($datos["emisor"],$datos["receptor"],"Recibidas");
+		$this->Model_Calificacion->transferencia_de_calificaciones($datos["emisor"],$datos["receptor"],"Realizadas");
+		$_data["ok"]="ok";
+		$this->response($_data);
+	}	
 }

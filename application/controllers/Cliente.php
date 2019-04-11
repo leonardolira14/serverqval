@@ -53,13 +53,44 @@ class Cliente extends REST_Controller
 	}
 	public function save_post(){
 		$datos=$this->post();
-		$_data["ok"]=$this->Model_Cliente->save($datos["IDEmpresa"],$datos["Nombre"],$datos["NombreComercial"],$datos["RFC"],$datos["Municipio"],$datos["Direccion"],$datos["Puesto"],$datos["Tel"],$datos["EEstado"],$datos["Correo"],$datos["IDConfig"],$datos["Estado"],$datos["TPersona"],$datos["Apellidos"],$datos["Actipass"],$datos["Telcontact"]);
+		$datos=json_decode($datos["datos"]);
+		$_data["ok"]=$this->Model_Cliente->save($datos->IDEmpresa,$datos->Nombre,$datos->NombreComercial,$datos->RFC,$datos->Municipio,$datos->Direccion,$datos->Puesto,$datos->Tel,$datos->EEstado,$datos->Correo,$datos->IDConfig,$datos->Estado,$datos->TPersona,$datos->Apellidos,$datos->Actipass,$datos->Telcontact,$datos->Imagen);
+		if(count($_FILES)!==0){
+			foreach ($_FILES as $key=> $nombre) {
+				if($key==="Imagen"){
+					$ruta='./assets/img/clientes/avatar/';
+				}
+				
+				$rutatemporal=$nombre["tmp_name"];
+				$nombreactual=$nombre["name"];
+				
+				move_uploaded_file($rutatemporal, $ruta.$nombreactual);
+				//$this->create_thumbnail($nombreactual,$ruta,$key);
+				
+			}
+			
+		} 
 		$this->response($_data);
 	}
-	public function update_put(){
-		$datos=$this->put();
-		
-		$_data["ok"]=$this->Model_Cliente->update($datos["IDCliente"],$datos["Nombre"],$datos["NombreComercial"],$datos["RFC"],$datos["Municipio"],$datos["Direccion"],$datos["Puesto"],$datos["Tel"],$datos["EEstado"],$datos["Correo"],$datos["IDConfig"],$datos["Estado"],$datos["TPersona"],$datos["Apellidos"],$datos["Actipass"],$datos["Telcontact"]);
+	public function update_post(){
+		$datos=$this->post();
+		$datos=json_decode($datos["datos"]);
+		$_data["ok"]=$this->Model_Cliente->update($datos->IDCliente,$datos->Nombre,$datos->NombreComercial,$datos->RFC,$datos->Municipio,$datos->Direccion,$datos->Puesto,$datos->Tel,$datos->EEstado,$datos->Correo,$datos->IDConfig,$datos->Estado,$datos->TPersona,$datos->Apellidos,$datos->Actipass,$datos->Telcontact,$datos->Imagen);
+		if(count($_FILES)!==0){
+			foreach ($_FILES as $key=> $nombre) {
+				if($key==="Imagen"){
+					$ruta='./assets/img/clientes/avatar/';
+				}
+				
+				$rutatemporal=$nombre["tmp_name"];
+				$nombreactual=$nombre["name"];
+				
+				move_uploaded_file($rutatemporal, $ruta.$nombreactual);
+				//$this->create_thumbnail($nombreactual,$ruta,$key);
+				
+			}
+			
+		} 
 		$this->response($_data);
 
 	}

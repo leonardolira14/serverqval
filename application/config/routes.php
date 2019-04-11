@@ -28,6 +28,7 @@ $route["updateuser"]="usuarios/update";
 $route["deleteuser"]="usuarios/deleteuser";
 $route["numregistrosuser"]="usuarios/numderegistristros";
 $route["deleteuserfin"]="usuarios/borrar";
+$route["transfierecalificacion"]="usuarios/transferircalificaciones";
 
 
 

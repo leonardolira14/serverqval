@@ -33,43 +33,34 @@ class General extends REST_Controller
 		$_data["NoUsuarios"]=$this->Model_Usuarios->numus($datos["datos"]);
 		$_data["NoCliente"]=$this->Model_Cliente->numclientes($datos["datos"]);
 		$_data["NoGrupo"]=$this->Model_Grupo->numgrupo($datos["datos"]);
+		$_data["GruposInternos"]=$this->Model_Grupo->getGrupos($datos["datos"],'I');
 		$_data["NoPregunta"]=$this->Model_Pregunta->numpregunta($datos["datos"]);
 		$_data["NoCuestionario"]=$this->Model_Cuestionario->numcuestionarios($datos["datos"]);
 		$_data["tipos_empresa"]=$this->Model_General->getTipEmpresa();
 		$_data["estados"]=$this->Model_General->getEstados();
 		$_data["NoEmpleados"]=$this->Model_General->getNomEmpleados();
 		$_data["Facturacion"]=$this->Model_General->getFacanual();
+		$_data["encuestas"]=$this->Model_Cuestionario->encuestas_panel($datos["datos"]);
 		$this->response($_data);
 	}
 	//funcio para modificar los datos de usaurio
 	public function updatedateus_post(){
 		//vdebug($_SERVER['DOCUMENT_ROOT']);
 		$datos=$this->post();
-		$publickey="";
-		$this->Model_Usuarios->update_general($datos["nombreus"],$datos["correo"],$datos["puesto"],$datos["apellido"],$datos["num"]);
-		
+		$_data["ok"]=$this->Model_Usuarios->update_general($datos["nombreus"],$datos["correo"],$datos["puesto"],$datos["apellido"],$datos["num"],$datos["Imagen"],$datos["IDConfig"]);
 		if(count($_FILES)!==0){
 			foreach ($_FILES as $key=> $nombre) {
 				if($key==="logo"){
-					$ruta='./assets/img/logoempresa/';
-
-
+					$ruta='./assets/img/usuarios/avatar/';
 				}
-				if($key==="banner"){
-					$ruta='./assets/img/bannerempresa/';
-				}
+				
 				$rutatemporal=$nombre["tmp_name"];
 				$nombreactual=$nombre["name"];
 				
-				move_uploaded_file($rutatemporal, $ruta.$nombreactual);
-				//$this->create_thumbnail($nombreactual,$ruta,$key);
-				$this->Model_Empresa->updateimg($datos["empresa"],$nombreactual,$key);
-				
+				move_uploaded_file($rutatemporal, $ruta.$nombreactual);		
 			}
 			
-		}
-
-		$_data["ok"]=1;
+		} 
 		$this->response($_data);
 		
 	}

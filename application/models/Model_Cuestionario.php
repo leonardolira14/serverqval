@@ -160,4 +160,32 @@ class Model_Cuestionario extends CI_Model
 		$array=array("IDEmpresa"=>$_IDEmpresa,"IDUsuario"=>$_IDUsuario,"Datos"=>$_Datos);
 		return $this->db->insert("tbencuestasborrador",$array);
 	}
+
+	public function encuestas_panel($_ID_Empresa){
+		// funcion para obtener las ultimas encuestas 
+		$respuesta=$this->db->select('*')->where("IDEmpresa='$_ID_Empresa'")->order_by('Fecha', 'DESC')->limit(5)->get('cuestionario');
+		if($respuesta->num_rows()=== 0){
+			return false;
+		}else{
+			$cuestionarios = $respuesta->result_array();
+			$data=[];
+			// ahroa obtengo los detalles de esos cuestionario
+			foreach ($cuestionarios as $cuestionario) {
+				$detalles=$this->getdetalles($cuestionario["IDCuestionario"]);
+				$cuestionariolist=json_decode($detalles['Cuestionario']);
+				$_numero_de_preguntas=count($cuestionariolist);
+				$_numero_de_calificaciones=$this->getnumregistros($cuestionario["IDCuestionario"]);
+				array_push($data,array(
+				"IDCuestionario"=>$cuestionario["IDCuestionario"],
+				"Nombre"=>$cuestionario["Nombre"],
+				"Fecha"=>$cuestionario["Fecha"],
+				"NumeroPreguntas"=>$_numero_de_preguntas,
+				"NumerodeRegistros"=>$_numero_de_calificaciones
+				));
+			}
+			return $data;
+
+			
+		}
+	}
 }

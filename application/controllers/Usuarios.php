@@ -89,8 +89,7 @@ class Usuarios extends REST_Controller
 				$nombreactual=$nombre["name"];
 				
 				move_uploaded_file($rutatemporal, $ruta.$nombreactual);
-				//$this->create_thumbnail($nombreactual,$ruta,$key);
-				$this->Model_Empresa->updateimg($datos->Empresa,$nombreactual,$key);
+				
 				
 			}
 			

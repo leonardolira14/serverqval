@@ -23,8 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-//$config['base_url'] = 'https://testqval.admyo.com/server_qval/';
-$config['base_url'] = 'http://localhost/qval/qval_web/serverqval/';
+$config['base_url'] = 'https://testqval.admyo.com/server_qval/';
+//$config['base_url'] = 'http://localhost/qval/qval_web/serverqval/';
 /*
 |--------------------------------------------------------------------------
 | Index File

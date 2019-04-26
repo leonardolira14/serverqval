@@ -10,10 +10,13 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login']="usuarios/loginn";
 $route['forgetpass']="usuarios/forgetpass";
 $route['panel']="general/panel";
+$route['registro']="general/registro";
+$route['getdatos']="general/getdatos";
 $route['Notificacion']="notificacion/notificaciones";
 $route['general']='general/general';
 $route['updateus']='general/updatedateus';
 $route['updateempresa']='empresa/updateempresa';
+
 
 $route['getgrupos']='grupos/getall';
 $route["updatestatusg"]="grupos/delete";
@@ -21,7 +24,7 @@ $route["updategrupo"]="grupos/update";
 $route["addgroup"]="grupos/add";
 $route["deletegrupo"]="grupos/borrar";
 
-
+$route["cambiopas"]="usuarios/cambiopas";
 $route["getalluser"]="usuarios/getAll";
 $route["saveuser"]="usuarios/save";
 $route["updateuser"]="usuarios/update";

@@ -21,10 +21,52 @@ class General extends REST_Controller
 		$this->load->model("Model_Cuestionario");
 		$this->load->model("Model_Pregunta");
 		$this->load->model("Model_General");
+		$this->load->model("Model_Conecta");
+		$this->load->model("Model_Email");
+		$this->load->model("Model_Admyo");
 		
 	}
-	public function index_post(){
+	public function registro_post(){
+		$datos=$this->post();
+		//primero veo que tipo es el pago
+		$respuesta=$this->Model_Conecta->Tarjeta($datos["pago"]["nombre"],$datos["pago"]["correo"],$datos["pago"]["token"],$datos["plan"],$datos["pago"]["total"],$datos["pago"]["tel"]);
 		
+		if($respuesta["status"]==="active"){
+			$customer_id=$respuesta["customer_id"];
+			$status_conecta=$respuesta["status"];
+			$plan_id=$respuesta["plan_id"];
+			
+			//la agregoho a admyo
+			$ID_Admyo=$this->Model_Admyo->add_empresa('PF',$datos["razonsocial"],$datos["nombrecomercial"],$datos["rfc"],$datos["TipoEmpresa"],$datos["noempleados"]);
+			//ahora agrego el usuario
+			$token=$this->Model_Admyo->add_Usuario($ID_Admyo,$datos["nombre"],$datos["apellidos"],$datos["correo"]);
+			//ahora mando el correo de activacion
+
+			$this->Model_Email->Activar_Usuario($token,$datos["correo"],$datos["nombre"],$datos["apellidos"],$datos["razonsocial"]);
+			//ahora inscribo a la empresa
+			$ID_Empresa=$this->Model_Empresa->add_empresa($datos["razonsocial"],$datos["nombrecomercial"],$datos["rfc"],$datos["TipoEmpresa"],$datos["noempleados"],$datos["telefono"],$customer_id,$status_conecta,$plan_id,$ID_Admyo);
+			//ahora agrego el usario
+			$this->Model_Usuarios->add_usuario($ID_Empresa,$datos["nombre"],$datos["apellidos"],$datos["correo"]);
+			//ahora mando el correo con los datos de bienvenida
+			$this->Model_Email->bienvenida($datos["correo"],$datos["nombre"],$datos["apellidos"],'123456');
+
+			$data["ok"]="succes";
+			
+		}else{
+			
+			$data["ok"]="error";
+			$data["error"]=$respuesta["error"];
+		}
+		$this->response($data);
+		
+			
+		
+
+	}
+	public function getdatos_get(){
+		$_data["tipos_empresa"]=$this->Model_General->getTipEmpresa();
+		$_data["NoEmpleados"]=$this->Model_General->getNomEmpleados();
+		$this->response($_data);
 	}
 
 	//function para el panel

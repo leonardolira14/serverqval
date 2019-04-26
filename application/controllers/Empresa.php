@@ -14,6 +14,7 @@ class Empresa extends REST_Controller
 		parent::__construct();
 		$this->load->model("Model_Empresa");
 		$this->load->model("Model_Usuarios");
+		
 	}
 	
 	//funcion para actualizar los datos de la empresa

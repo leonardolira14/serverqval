@@ -13,6 +13,16 @@ class Model_Usuarios extends CI_Model
 		$this->constante="FpgH456Gtdgh43i349gjsjf%ttt";
 	}
 
+	public function verificar_clave($IDUsuario,$_Clave){
+		$_Clave=md5($_Clave.$this->constante);
+		$respuesta=$this->db->select('*')->where("IDUsuario='$IDUsuario' and Clave='$_Clave'")->get("usuario");
+		if($respuesta->num_rows()===0){
+			return false;
+		}else{
+			return true;
+		}
+
+	}
 	//funcion para para saber cuantos registros tengo de un usuario
 	public function getnumregistros($_ID_Usuario){
 		$emisor=$this->db->select("count(*) as numero")->where("IDEmisor='$_ID_Usuario' and TEmisor='I'")->get("tbcalificaciones");
@@ -68,6 +78,19 @@ class Model_Usuarios extends CI_Model
 		}else{
 			return $respuesta->result();
 		}	
+	}
+	//funcion para agregar un usuario
+	public function add_usuario($IDEmpresa,$Nombre,$Apellidos,$correo){
+		$array=array(
+			"IDEmpresa"=>$IDEmpresa,
+			"Nombre"=>$Nombre,
+			"Apellidos"=>$Apellidos,
+			"Usuario"=>$correo,
+			"Correo"=>$correo,
+			"Est"=>'1',
+			"funciones"=>json_encode(["1","1","1","1","1","1","1","1","1"])
+		); 
+		$this->db->insert("usuario",$array);
 	}
 	//funcion para egregar un nuevo usuario
 	public function save($_ID_Empresa,$_Nombre,$_Apellido,$_Puesto,$_Correo,$_Configuracion,$_Funciones,$_Usuario,$_Imagen){

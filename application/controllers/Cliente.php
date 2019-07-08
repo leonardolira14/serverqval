@@ -49,6 +49,7 @@ class Cliente extends REST_Controller
 	public function getAll_post(){
 		$datos=$this->post();
 		$_data["ok"]=$this->Model_Cliente->getAll($datos["empresa"]);
+		$_data["grupos"]=$this->Model_Grupo->getGrupos($datos["empresa"],"E");
 		$this->response($_data);
 	}
 	public function save_post(){

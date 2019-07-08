@@ -39,7 +39,7 @@ class Cuestionario extends REST_Controller
 		$_data["grupos"]=$this->Model_Cuestionario->getAllgroup($datos["empresa"]);
 		$_data["usuarios"]=$this->Model_Usuarios->getAll($datos["empresa"]);
 		$_data["gruposExternos"]=$this->Model_Grupo->getGrupos($datos["empresa"],"E");
-		$_data["gruposInternos"]=$this->Model_Grupo->getGrupos($datos["empresa"],"I")
+		$_data["gruposInternos"]=$this->Model_Grupo->getGrupos($datos["empresa"],"I");
 		$this->response($_data);
 	}
 	//funcion para obtener los datos de los cuestionarios

@@ -53,13 +53,23 @@ class Model_Pregunta extends CI_Model
 		}
 	}
 	//funcion para save una pregunta
-	public function save($_Pregunta,$_Forma,$_Frecuencia,$_Peso,$_Respuesta,$_Respuestas,$Obligatoria){
+	public function save($_Pregunta,$_Forma,$_Frecuencia,$_Peso,$_Respuesta,$_Respuestas,$Obligatoria,$Indicador,$Detalleindicador){
 		if($_Forma==="DESLIZA"|| $_Forma==="ML" || $_Forma==="MLC" || $_Forma==="SI/NO"||$_Forma==="SI/NO/NA" || $_Forma==="SI/NO/NS"){
 			$Respuestas=json_encode($_Respuestas);
 		}else{
 			$Respuestas=$_Respuestas;
 		}
-		$array=array("Pregunta"=>$_Pregunta,"Forma"=>$_Forma,"Frecuencia"=>$_Frecuencia,"Peso"=>$_Peso,"Respuesta"=>$_Respuesta,"Respuestas"=>$Respuestas,"Obligatoria"=>$Obligatoria);
+		$array=array(
+			"Pregunta"=>$_Pregunta,
+			"Forma"=>$_Forma,
+			"Frecuencia"=>$_Frecuencia,
+			"Peso"=>$_Peso,
+			"Respuesta"=>$_Respuesta,
+			"Respuestas"=>$Respuestas,
+			"Obligatoria"=>$Obligatoria,
+			"Indicador"=>$Indicador,
+			"Detalleindicador"=>json_encode($Detalleindicador)
+		);
 		 $this->db->insert("tbpreguntas",$array);
 		 $ultimo=$this->db->insert_id();
 		 return $ultimo;

@@ -38,12 +38,15 @@ class Cuestionario extends REST_Controller
 		$_data["ok"]=$this->Model_Cuestionario->getallpanel($datos["empresa"]);
 		$_data["grupos"]=$this->Model_Cuestionario->getAllgroup($datos["empresa"]);
 		$_data["usuarios"]=$this->Model_Usuarios->getAll($datos["empresa"]);
+		$_data["gruposExternos"]=$this->Model_Grupo->getGrupos($datos["empresa"],"E");
+		$_data["gruposInternos"]=$this->Model_Grupo->getGrupos($datos["empresa"],"I")
 		$this->response($_data);
 	}
 	//funcion para obtener los datos de los cuestionarios
 	public function getdatoscuest_post(){
 		$datos=$this->post();
 		$_data["ok"]=$this->Model_Cuestionario->getallquestionary($datos["empresa"],$datos["status"]);
+		
 		$this->response($_data);
 	}
 	//funcion para obtener los datos de los cuestionarios
@@ -67,7 +70,7 @@ class Cuestionario extends REST_Controller
 	public function addcuestionario_post(){
 		$datos=$this->post();
 		// veo si solo se actualiza 
-		
+		//vdebug($datos);
 		if(isset($datos['IDCuestionario'])){
 			//quiere decir que estoy modificando un cuestionario
 			//modifico los datos principales
@@ -103,9 +106,9 @@ class Cuestionario extends REST_Controller
 					$Respuestas="";
 				}
 				if(isset($pregunta["IDPregunta"])){
-					$IDPregunta=$this->Model_Pregunta->update($pregunta["IDPregunta"],$pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"]);
+					$IDPregunta=$this->Model_Pregunta->update($pregunta["IDPregunta"],$pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$pregunta["indicador"],$pregunta["detalleindicador"]);
 				}else{
-					$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"]);
+					$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$pregunta["indicador"],$pregunta["detalleindicador"]);
 				}	
 				array_push($lista_cuestionario,$IDPregunta);
 				$_data["ok"]=$this->Model_Cuestionario->updatedatelle($datos["IDCuestionario"],json_encode($lista_cuestionario),$_PerfilCalifica,$_PerfilCalificado,$_TPEmisor,$_TPReceptor);
@@ -144,7 +147,7 @@ class Cuestionario extends REST_Controller
 					$Respuestas="";
 				}
 				
-				$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"]);
+				$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$pregunta["indicador"],$pregunta["detalleindicador"]);
 				array_push($lista_cuestionario,$IDPregunta);
 			}
 			//ahora guardo los datos de los detalles

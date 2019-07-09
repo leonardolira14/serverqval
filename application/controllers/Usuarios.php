@@ -170,7 +170,7 @@ class Usuarios extends REST_Controller
 	public function save_post(){
 		$datos=$this->post();
 		$datos=json_decode($datos["datos"]);
-		$_data["ok"]=$this->Model_Usuarios->save($datos->Empresa,$datos->Nombre,$datos->Apellidos,$datos->Puesto,$datos->Correo,$datos->Configuracion,$datos->functions,$datos->Usuario,$datos->Imagen);
+		$_data["ok"]=$this->Model_Usuarios->save($datos->Empresa,$datos->Nombre,$datos->Apellidos,$datos->Puesto,$datos->Correo,$datos->IDConfig,$datos->functions,$datos->Usuario,$datos->Imagen,$datos->Celular);
 		
 		if(count($_FILES)!==0){
 			foreach ($_FILES as $key=> $nombre) {
@@ -202,7 +202,7 @@ class Usuarios extends REST_Controller
 		$datos=$this->post();
 
 		$datos=json_decode($datos["datos"]);
-		$_respuesta=$this->Model_Usuarios->update($datos->Id,$datos->Nombre,$datos->Apellidos,$datos->Puesto,$datos->Correo,$datos->Configuracion,$datos->functions,$datos->Usuario,$datos->Imagen);
+		$_respuesta=$this->Model_Usuarios->update($datos->Id,$datos->Nombre,$datos->Apellidos,$datos->Puesto,$datos->Correo,$datos->IDConfig,$datos->functions,$datos->Usuario,$datos->Imagen,$datos->Celular);
 		if(count($_FILES)!==0){
 			foreach ($_FILES as $key=> $nombre) {
 				if($key==="Imagen"){

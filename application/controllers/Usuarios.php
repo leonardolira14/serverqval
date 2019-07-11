@@ -145,12 +145,14 @@ class Usuarios extends REST_Controller
 			$_data["ok"]="La dirección de correo electrónico no existe";
 		}else{
 			//aqui envio el correo electronico que va a llevar las instrucciones 
-			$Clave=genereclabe();
+			//genero token para la recuperacion  de contraseña
+			$Token=genereclabe();
+			//ahora guardo la esa secion para revisar de quien ese token
+			$this->Model_General->save_token_recupera_clave($respuesta["IDUsuario"],$Token);
+			$this->Model_Email->Recuperar_pass($respuesta["Correo"],$Token);
 
-			$this->Model_Usuarios->update_clave($respuesta["IDUsuario"],$Clave);
-			$this->Model_Email->Recuperar_pass($respuesta["Correo"],$respuesta["Nombre"],$respuesta["Apellidos"],$respuesta["Usuario"],$Clave);
 			$_data["pass"]=1;
-			$_data["ok"]="Datos enviados al correo que esta registrado";
+			$_data["ok"]="Te enviaremos un email con instrucciones sobre cómo restablecer tu contraseña.";
 		}
 		$this->response($_data);
 	}
@@ -170,8 +172,21 @@ class Usuarios extends REST_Controller
 	public function save_post(){
 		$datos=$this->post();
 		$datos=json_decode($datos["datos"]);
-		$_data["ok"]=$this->Model_Usuarios->save($datos->Empresa,$datos->Nombre,$datos->Apellidos,$datos->Puesto,$datos->Correo,$datos->IDConfig,$datos->functions,$datos->Usuario,$datos->Imagen,$datos->Celular);
-		
+		$clave=genereclabe();
+		$_data["token"]=$this->Model_Usuarios->save(
+			$datos->Empresa,
+			$datos->Nombre,
+			$datos->Apellidos,
+			$datos->Puesto,
+			$datos->Correo,
+			$datos->IDConfig,
+			$datos->functions,
+			$datos->Usuario,
+			$datos->Imagen,
+			$datos->Celular,
+			$clave
+		);
+		$_data["ok"]=true;
 		if(count($_FILES)!==0){
 			foreach ($_FILES as $key=> $nombre) {
 				if($key==="Imagen"){
@@ -187,14 +202,17 @@ class Usuarios extends REST_Controller
 			}
 			
 		} 
+		$this->Model_Email->Activar_Usuario($_data["token"],$datos->Correo,$datos->Nombre,$datos->Apellidos,$datos->Usuario,$clave);
 		$this->response($_data);
 	}
 	//funcion para dar de baja un usario
 	public function deleteuser_delete(){
-		$datos=$_GET["userdelete"];
-		$estado=$_GET["userstate"];
+		$datos=$this->post();
 		//$datos=$this->get();
-		$_data["ok"]=$this->Model_Usuarios->update_status($datos,$estado);
+		$datos_usuario= $this->Model_Usuarios->getdata($datos["id"]);
+		$this->Model_Email->down_user($datos_usuario["Correo"]);
+		$this->Model_Email->down_user_notification($datos["correo_baja"],$datos_usuario["Nombre"],$datos_usuario["Apellidos"]);
+		$_data["ok"]=$this->Model_Usuarios->update_status($datos["id"],$datos["state"]);
 		$this->response($_data);
 	}
 	//funcion para actualizar un usuario
@@ -241,5 +259,57 @@ class Usuarios extends REST_Controller
 		$this->Model_Calificacion->transferencia_de_calificaciones($datos["emisor"],$datos["receptor"],"Realizadas");
 		$_data["ok"]="ok";
 		$this->response($_data);
-	}	
+	}
+	public function changepassword_post(){
+		$_POST = json_decode(file_get_contents("php://input"), true);
+		$config=array( 
+		array(
+			'field'=>'clave', 
+			'label'=>'Contraseña', 
+			'rules'=>'callback_valid_password'					
+		));
+		$this->form_validation->set_error_delimiters('<p>', '</p>');
+		$this->form_validation->set_rules($config);
+		$array=array("required"=>'El campo %s es obligatorio',"valid_email"=>'El campo %s no es valido',"min_length[3]"=>'El campo %s debe ser mayor a 3 Digitos',"min_length[10]"=>'El campo %s debe ser mayor a 10 Digitos','alpha'=>'El campo %s debe estar compuesto solo por letras',"matches"=>"Las contraseñas no coinciden",'is_unique'=>'El contenido del campo %s ya esta registrado');
+		$this->form_validation->set_message($array);
+		if($this->form_validation->run() !=false){
+			// traigo lo datos del token 
+			$claveNueva=$_POST["clave"];
+			$Token=$_POST["token"];
+
+			$datos_token=$this->Model_General->get_datos_token($Token);
+		
+			if(count($datos_token)===0){
+				$_data["code"]=1990;
+				$_data["ok"]="Error";
+				$_data["result"]="El token de la sesion no existe.";
+			}else{
+				// ahora obtengo los datos del usuario que quiero cambiar la contraseña
+				$datos_usuarios=$this->Model_Usuarios->getdata($datos_token["IDUsuario"]);
+				$this->Model_Usuarios->update_clave($datos_token["IDUsuario"],$claveNueva);
+				//elimino la sesion 
+				$this->Model_General->delete_session_password($datos_token["IDSesion"]);
+				$_data["code"]=0;
+				$_data["ok"]="Success";
+			}
+			
+		}else{
+			$_data["code"]=1990;
+			$_data["ok"]="Error";
+			$_data["result"]=validation_errors();
+		}
+		$this->response(array("response"=>$_data));
+	}
+	public function activacuenta_post(){
+		$datos=$this->post();
+		$respuesta=$this->Model_Usuarios->activacuenta($datos["token"]);
+		if($respuesta===false){
+			$_data["ok"]="Error";
+			$_data["mensaje"]="Token no valido";
+		}else{
+			$_data["ok"]="Success";
+			$_data["mensaje"]="Cuenta Activada.";
+		}
+		$this->response(array("response"=>$_data));
+	}
 }

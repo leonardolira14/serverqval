@@ -31,4 +31,17 @@ class Model_General extends CI_Model
 		$respuesta=$this->db->select("TipoEmpresa")->get("tiposempresa");
 		return $respuesta->result();
 	} 
+	//funcion para guardar la sesion para la recuperacion de contraseña
+	public function save_token_recupera_clave($_IDUsuario,$_Token){
+		$array=array("IDUsuario"=>$_IDUsuario,"Token"=>$_Token);
+		$this->db->insert("sessiones_password",$array);
+
+	}
+	public function get_datos_token($Token){
+		$respuesta=$this->db->select('*')->where("Token='$Token'")->get("sessiones_password");
+		return $respuesta->row_array();
+	}
+	public function delete_session_password($IDToken){
+		$this->db->where("IDSesion='$IDToken'")->delete("sessiones_password");
+	}
 }

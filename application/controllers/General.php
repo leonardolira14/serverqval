@@ -40,15 +40,12 @@ class General extends REST_Controller
 			$ID_Admyo=$this->Model_Admyo->add_empresa('PF',$datos["razonsocial"],$datos["nombrecomercial"],$datos["rfc"],$datos["TipoEmpresa"],$datos["noempleados"]);
 			//ahora agrego el usuario
 			$token=$this->Model_Admyo->add_Usuario($ID_Admyo,$datos["nombre"],$datos["apellidos"],$datos["correo"]);
-			//ahora mando el correo de activacion
+			
 
-			$this->Model_Email->Activar_Usuario($token,$datos["correo"],$datos["nombre"],$datos["apellidos"],$datos["razonsocial"]);
 			//ahora inscribo a la empresa
 			$ID_Empresa=$this->Model_Empresa->add_empresa($datos["razonsocial"],$datos["nombrecomercial"],$datos["rfc"],$datos["TipoEmpresa"],$datos["noempleados"],$datos["telefono"],$customer_id,$status_conecta,$plan_id,$ID_Admyo);
 			//ahora agrego el usario
 			$this->Model_Usuarios->add_usuario($ID_Empresa,$datos["nombre"],$datos["apellidos"],$datos["correo"]);
-			//ahora mando el correo con los datos de bienvenida
-			$this->Model_Email->bienvenida($datos["correo"],$datos["nombre"],$datos["apellidos"],'123456');
 
 			$data["ok"]="succes";
 			

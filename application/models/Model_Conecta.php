@@ -7,7 +7,7 @@ class Model_Conecta extends CI_Model{
 		parent::__construct();
 		$this->load->database();
 		$this->constant="vkq4suQesgv6FVvfcWgc2TRQCmAc80iE";
-		$this->apikey="key_A5ahydDgxgjiYsnKrDbisQ";
+		$this->apikey="key_wgxJ3a87hr5zUHBcX1yLuA";
 		$this->description="Plan Qval";
 		$this->currency="MXN";
 	}

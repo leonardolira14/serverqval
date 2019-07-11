@@ -93,7 +93,9 @@ class Model_Usuarios extends CI_Model
 		$this->db->insert("usuario",$array);
 	}
 	//funcion para egregar un nuevo usuario
-	public function save($_ID_Empresa,$_Nombre,$_Apellido,$_Puesto,$_Correo,$_Configuracion,$_Funciones,$_Usuario,$_Imagen,$_Celular){
+	public function save($_ID_Empresa,$_Nombre,$_Apellido,$_Puesto,$_Correo,$_Configuracion,$_Funciones,$_Usuario,$_Imagen,$_Celular,$clave){
+		$clave=md5($Clave.$this->constante);
+		$Token=md5($data["H:i:s"]);
 		$datos=array(
 			"IDEmpresa"=>$_ID_Empresa,
 			"Nombre"=>$_Nombre,
@@ -103,11 +105,14 @@ class Model_Usuarios extends CI_Model
 			"IDConfig"=>$_Configuracion,
 			"Funciones"=>$_Funciones,
 			"Usuario"=>$_Usuario,
-			"Est"=>1,
+			"Est"=>0,
 			"Imagen"=>$_Imagen,
-			"Celular"=>$_Celular
+			"Celular"=>$_Celular,
+			"Clave"=>$clave,
+			"Token"=>$Token
 		);
 		$this->db->insert("usuario",$datos);
+		return $Token;
 
 	}
 	public function update_status($_ID_Usuario,$_Estado){
@@ -136,5 +141,25 @@ class Model_Usuarios extends CI_Model
 	public function update_function($_ID_Usuario,$_funciones){
 		$array=array("Funciones"=>$_funciones);
 		return $this->db->where("IDUsuario='$_ID_Usuario'")->update("usuario",$array);
+	}
+	//funcion para obtener los datos del usuario
+	public function getdata($_IDUsuario){
+		$sql=$this->db->select("*")->where("IDUsuario='$_IDUsuario'")->get("usuario");
+		if($sql->num_rows()===0){
+			return false;
+		}else{
+			return $sql->row_array();
+		}	
+	}
+	public function activacuenta($_token){
+		//primero veo si existe el token
+		$datos=$this->db->select('*')->where("Token='$_token'")->get('usuario');
+		if($datos->num_rows()===0){
+			return false;
+		}else{
+			$datos_usuario=$datos->row_array();
+			//vdebug($datos_usuario);
+			return $this->db->where("IDUsuario='".$datos_usuario['IDUsuario']."'")->update("usuario",array("Est"=>1));
+		}
 	}
 }

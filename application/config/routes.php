@@ -32,11 +32,10 @@ $route["deleteuser"]="usuarios/deleteuser";
 $route["numregistrosuser"]="usuarios/numderegistristros";
 $route["deleteuserfin"]="usuarios/borrar";
 $route["transfierecalificacion"]="usuarios/transferircalificaciones";
-
-
-
-
 $route["updateuserfunction"]="usuarios/updatefunction";
+$route["changepassword"]='usuarios/changepassword';
+$route['activacuenta']='usuarios/activacuenta';
+
 $route["getallclient"]="cliente/getAll";
 $route["saveclient"]="cliente/save";
 $route["updateclient"]="cliente/update";

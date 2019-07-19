@@ -37,7 +37,6 @@ class Resumen extends REST_Controller
 		$datoscuestionario=$this->Model_Cuestionario->getdata($_ID_cuestionario);
 
 		$detallesduestionario=$this->Model_Cuestionario->getdetalles($_ID_cuestionario);
-		
 		$detallesemisor=$this->Model_Grupo->getgruposIDTipo($detallesduestionario["PerfilCalifica"],$detallesduestionario["TPEmisor"]);
 		$detallesreceptor=$this->Model_Grupo->getgruposIDTipo($detallesduestionario["PerfilCalificado"],$detallesduestionario["TPReceptor"]);
 		//ahora necesito obtener las veces que fue realizado ese cuestionario en esas fechas
@@ -49,6 +48,7 @@ class Resumen extends REST_Controller
 		$litsa_preguntas= json_decode($detallesduestionario["Cuestionario"]);
 		
 		$tabla=[];
+		
 		//ahora obtengo los detalles de cada pregunta y voy obtennieno las veces que han contestado esa pregunta
 		foreach ($litsa_preguntas as $nomenclatura) {
 			$detall=$this->Model_Pregunta->nomeclatura($nomenclatura);
@@ -93,7 +93,7 @@ class Resumen extends REST_Controller
 				
 		}
 
-		$_data["grafica"]=array("labels"=>$fechas,"datos"=>array("data"=>$grafica,"label"=>'# de veces realizado el cuestioario'));
+		$_data["grafica"]=array("labels"=>$fechas,"datos"=>array("data"=>$grafica,"label"=>'# de veces realizado el cuestionario'));
 		//vdebug($_data);
 		$this->response($_data);
 		

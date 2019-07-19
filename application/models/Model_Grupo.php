@@ -40,13 +40,29 @@ class Model_Grupo extends CI_Model
 			return $respuesta->row_array();
 		}
 	}
+	//function para obtener el numero de miembros de un grupo
+	public function getNumMiembros($_IDGrupo,$_Tipo_Grupo){
+		if($_Tipo_Grupo==='I'){
+			$respuesta=$this->db->select("count(*) as num")->where("IDConfig='$_IDGrupo'")->get("usuario");
+		}
+		if($_Tipo_Grupo==='E'){
+			$respuesta=$this->db->select("count(*) as num")->where("IDConfig='$_IDGrupo'")->get("clientes");
+		}
+		return $respuesta->row_array();
+	}	
 	//funcion para obtener grupos
 	public function getGrupos($_ID_Empresa,$_Tipo){
 		$respuesta=$this->db->select("*")->where("IDEmpresa='$_ID_Empresa' and Tipo='$_Tipo'")->get("grupos");
 		if($respuesta->num_rows()===0){
 			return false;
 		}else{
-			return $respuesta->result();
+			$resultados=$respuesta->result_array();
+			foreach($resultados as $item  =>  $resultado){
+				$numero=$this->getNumMiembros($resultado["IDGrupo"],$resultado["Tipo"]);
+				$resultados[$item]["NoMiembros"]=$numero["num"];
+			}
+			return $resultados;
+			
 		}
 	}
 	public function updatestatus($_ID,$_staus){

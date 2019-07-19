@@ -86,7 +86,8 @@ class General extends REST_Controller
 	public function updatedateus_post(){
 		//vdebug($_SERVER['DOCUMENT_ROOT']);
 		$datos=$this->post();
-		$_data["ok"]=$this->Model_Usuarios->update_general($datos["nombreus"],$datos["correo"],$datos["puesto"],$datos["apellido"],$datos["num"],$datos["Imagen"],$datos["IDConfig"]);
+		
+		$_data["ok"]=$this->Model_Usuarios->update_general($datos["nombreus"],$datos["correo"],$datos["puesto"],$datos["apellido"],$datos["num"],$datos["Imagen"],$datos["IDConfig"],$datos["celular"]);
 		if(count($_FILES)!==0){
 			foreach ($_FILES as $key=> $nombre) {
 				if($key==="logo"){

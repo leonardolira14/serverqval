@@ -41,8 +41,10 @@ class Model_Usuarios extends CI_Model
 	public function login($_Usuario,$_Clave){
 		//concateno la clave
 		$_Clave=md5($_Clave.$this->constante);
+		
 		//ahora realizo la consulta
 		$sql=$this->db->select('*')->where("Usuario='$_Usuario' and Clave='$_Clave'")->get("usuario");
+		//vdebug($_Clave);
 		if($sql->num_rows()===0){
 			return false;
 		}else{
@@ -65,8 +67,8 @@ class Model_Usuarios extends CI_Model
 		}	
 	}
 	//funcion para actulizar datos generales
-	public function update_general($_nombre,$_Correo,$_puesto,$apellidos,$_ID_Usuario,$Imagen,$IDConfig){
-		$array=array("Nombre"=>$_nombre,"Correo"=>$_Correo,"Puesto"=>$_puesto,"Apellidos"=>$apellidos,"Imagen"=>$Imagen,"IDConfig"=>$IDConfig);
+	public function update_general($_nombre,$_Correo,$_puesto,$apellidos,$_ID_Usuario,$Imagen,$IDConfig,$celular){
+		$array=array("Nombre"=>$_nombre,"Correo"=>$_Correo,"Puesto"=>$_puesto,"Apellidos"=>$apellidos,"Imagen"=>$Imagen,"IDConfig"=>$IDConfig,"Celular"=>$celular);
 		return $this->db->where("IDUsuario='$_ID_Usuario'")->update("usuario",$array);
 	}
 	

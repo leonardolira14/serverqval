@@ -120,6 +120,7 @@ class Usuarios extends REST_Controller
 	public function loginn_post()
 	{
 		$datos= $this->post();
+		
 		$_Usuario=$datos["datos"]["user"];
 		$_Clave=$datos["datos"]["pas"];
 		$respuesta=$this->Model_Usuarios->login($_Usuario,$_Clave);
@@ -311,5 +312,17 @@ class Usuarios extends REST_Controller
 			$_data["mensaje"]="Cuenta Activada.";
 		}
 		$this->response(array("response"=>$_data));
+	}
+	public function reeenvioclave_post(){
+			$datos=$this->post();
+			$respuesta= $this->Model_Usuarios->getdata($datos["Usuario"]);
+			$Token=genereclabe();
+			//ahora guardo la esa secion para revisar de quien ese token
+			$this->Model_General->save_token_recupera_clave($respuesta["IDUsuario"],$Token);
+			$this->Model_Email->Recuperar_pass($respuesta["Correo"],$Token);
+
+			$_data["pass"]=1;
+			$_data["ok"]="Se envio un email con instrucciones sobre cómo restablecer la contraseña.";
+			$this->response($_data);
 	}
 }

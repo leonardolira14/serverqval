@@ -35,6 +35,7 @@ $route["transfierecalificacion"]="usuarios/transferircalificaciones";
 $route["updateuserfunction"]="usuarios/updatefunction";
 $route["changepassword"]='usuarios/changepassword';
 $route['activacuenta']='usuarios/activacuenta';
+$route["resendpassword"]='usuarios/reeenvioclave';
 
 $route["getallclient"]="cliente/getAll";
 $route["saveclient"]="cliente/save";

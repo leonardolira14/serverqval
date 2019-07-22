@@ -18,6 +18,7 @@ class Pregunta extends REST_Controller
 		$this->load->model("Model_Calificacion");
 		$this->load->model("Model_Cuestionario");
 		$this->load->model("Model_Grupo");
+		$this->load->model("Model_Usuarios");
 	}
 	public function delete_post(){
 		$datos=$this->post();
@@ -127,6 +128,7 @@ class Pregunta extends REST_Controller
 		$_data["ok"]=$this->Model_Pregunta->getcategias($datos["IDEmpresa"]);
 		$_data["pinternos"]=$this->Model_Grupo->getGrupos($datos["IDEmpresa"],"I");
 		$_data["pexternos"]=$this->Model_Grupo->getGrupos($datos["IDEmpresa"],"E");
+		$_data["usuarios"]=$this->Model_Usuarios->getAll($datos["IDEmpresa"]);
 		$this->response($_data);
 	}
 

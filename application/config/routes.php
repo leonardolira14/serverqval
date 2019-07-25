@@ -69,7 +69,6 @@ $route["getdatosencuesta"]="cuestionario/getdatosencuesta";
 
 
 $route["addcuesnotfquestionary"]="cuestionario/updatenotificacion";
-
 $route["addgrupoencuesta"]='cuestionario/upsategrupo';
 $route["addborradorencuesta"]='cuestionario/addborradorencuesta';
 
@@ -88,3 +87,7 @@ $route["getresumen"]="resumen/getresumen";
 $route["getdetailsresumen"]="resumen/getdetailstable";
 $route["downloaddetall"]="resumen/detallessvg";
 $route["downloadresumen"]="resumen/resumensvg";
+
+//funcion para las notificaciones
+$route["getnotificaciones"]="Notificacion/getNotificaciones";
+$route["deletenotificacionpreg"]="Notificacion/deletepreg";

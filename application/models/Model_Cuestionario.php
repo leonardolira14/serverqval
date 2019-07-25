@@ -30,6 +30,11 @@ class Model_Cuestionario extends CI_Model
 		$respuesta=$this->db->select("count(*) as numcuestionarios")->where("IDEmpresa='$_ID_Empresa'")->get("cuestionario");
 		return $respuesta->row();
 	}
+	//funcion para obtener todos los grupos
+	public function  getAllcuestionarios($_IDEmpresa){
+		$respuesta=$this->db->select("*")->where("IDEmpresa='$_IDEmpresa'")->get("cuestionario");
+		return $respuesta->result_array();
+	}
 	//funcion para obtener todos los cuestionarios de una empresa
 	public function getallpanel($_ID_Empresa){
 		$respuesta=$this->db->select("detallecuestionario.Notificaciones as Notificaciones,detallecuestionario.Grupo as Grupo,cuestionario.status as estado,cuestionario.IDCuestionario as numero,cuestionario.Nombre as nombre,IDDetalle as numdetalle,PerfilCalifica,PerfilCalificado,TPEmisor,TPReceptor")->from("cuestionario")->join('detallecuestionario','detallecuestionario.IDCuestionario=cuestionario.IDCuestionario')->where("IDEmpresa='$_ID_Empresa'")->get();

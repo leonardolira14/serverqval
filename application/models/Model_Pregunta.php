@@ -69,7 +69,7 @@ class Model_Pregunta extends CI_Model
 			"Obligatoria"=>$Obligatoria,
 			"Indicador"=>$Indicador,
 			"Detalleindicador"=>json_encode($Detalleindicador),
-			"Notificaciones"=>json_encode($Notificaciones)
+			"listanotificaciones"=>json_encode($Notificaciones)
 		);
 		 $this->db->insert("tbpreguntas",$array);
 		 $ultimo=$this->db->insert_id();
@@ -77,13 +77,24 @@ class Model_Pregunta extends CI_Model
 
 	}
 	//funcion para actualizar una pregunta
-	public function update($_IDPregunta,$_Pregunta,$_Forma,$_Frecuencia,$_Peso,$_Respuesta,$_Respuestas,$_Obligatoria,$_Notificaciones){
+	public function update($_IDPregunta,$_Pregunta,$_Forma,$_Frecuencia,$_Peso,$_Respuesta,$_Respuestas,$_Obligatoria,$Indicador,$detalle_indicador,$_Notificaciones){
 		if($_Forma==="DESLIZA"|| $_Forma==="ML" || $_Forma==="MLC" || $_Forma==="SI/NO"||$_Forma==="SI/NO/NA" || $_Forma==="SI/NO/NS"){
 			$Respuestas=json_encode($_Respuestas);
 		}else{
 			$Respuestas=$_Respuestas;
 		}
-		$array=array("Pregunta"=>$_Pregunta,"Forma"=>$_Forma,"Frecuencia"=>$_Frecuencia,"Peso"=>$_Peso,"Respuesta"=>$_Respuesta,"Respuestas"=>$Respuestas,"Obligatoria"=>$_Obligatoria,"Notificaciones"=>json_encode($_Notificaciones));
+		$array=array(
+			"Pregunta"=>$_Pregunta,
+			"Forma"=>$_Forma,
+			"Frecuencia"=>$_Frecuencia,
+			"Peso"=>$_Peso,
+			"Respuesta"=>$_Respuesta,
+			"Respuestas"=>$Respuestas,
+			"Obligatoria"=>$_Obligatoria,
+			"Indicador"=>$Indicador,
+			"Detalleindicador"=>$detalle_indicador,
+			"listanotificaciones"=>json_encode($_Notificaciones)
+		);
 		$this->db->where("IDPregunta='$_IDPregunta'")->update("tbpreguntas",$array);
 		return $_IDPregunta;
 	}
@@ -106,7 +117,17 @@ class Model_Pregunta extends CI_Model
 		}else{
 			$respuestas_=$datos["Respuestas"];
 		}
-		$array=array("IDPregunta"=>$datos["IDPregunta"],"Pregunta"=>$datos["Pregunta"],"Forma"=>$datos["Forma"],"Respuesta"=>$datos["Respuesta"],"Respuestas"=>$respuestas_,"Obligatoria"=>$datos["Obligatoria"],"Peso"=>$datos["Peso"],"Frecuencia"=>$datos["Frecuencia"]);
+		$array=array(
+			"IDPregunta"=>$datos["IDPregunta"],
+			"Pregunta"=>$datos["Pregunta"],
+			"Forma"=>$datos["Forma"],
+			"Respuesta"=>$datos["Respuesta"],
+			"Respuestas"=>$respuestas_,
+			"Obligatoria"=>$datos["Obligatoria"],
+			"Peso"=>$datos["Peso"],
+			"Frecuencia"=>$datos["Frecuencia"],
+			"listanotificaciones"=>$datos["listanotificaciones"]
+		);
 		return $array;
 	}
 

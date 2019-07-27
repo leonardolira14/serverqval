@@ -12,14 +12,14 @@ class Pruebacorreo extends CI_Controller{
     
     //funcion para prueba de contraseña
     public function Recuperarpass(){
-        $_Correo_envio="lira053@gmail.com";
+        $_Correo_envio="bernardodetomas@admyo.com";
         $Token="sfljhgskjdfh";
         $respuesta=$this->Model_Email->Recuperar_pass($_Correo_envio,$Token);
         var_dump($respuesta);
     }
     //funcion para prueba de activar usuario
     public function activarusuario(){
-        $_Correo_envio="lira053@gmail.com";
+        $_Correo_envio="bernardodetomas@admyo.com";
         $Token="sfljhgskjdfh";
         $_Nombre="Leonardo";
         $_Apellido="Lira";
@@ -30,7 +30,7 @@ class Pruebacorreo extends CI_Controller{
     }
     //funcion para bienvenida
     public function bienvenida(){
-        $_Correo_envio="lira053@gmail.com";
+        $_Correo_envio="bernardodetomas@admyo.com";
         $Token="sfljhgskjdfh";
         $_Nombre="Leonardo";
         $_Apellido="Lira";
@@ -41,13 +41,13 @@ class Pruebacorreo extends CI_Controller{
     }
     //funcion para baja de usuario
     public function downuser(){
-        $_Correo_envio="lira053@gmail.com";
+        $_Correo_envio="bernardodetomas@admyo.com";
         $respuesta=$this->Model_Email->down_user($_Correo_envio);
         vdebug($respuesta);
     }
     //funcion para baja de usuario admin
     public function downusernotification(){
-        $_Correo_envio="lira053@gmail.com";
+        $_Correo_envio="bernardodetomas@admyo.com";
         $_Nombre="Leonardo";
         $_Apellido="Lira";
         $respuesta=$this->Model_Email->down_user_notification($_Correo_envio, $_Nombre,$_Apellido);

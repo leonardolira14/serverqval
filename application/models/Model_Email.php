@@ -126,7 +126,8 @@ class Model_Email extends CI_Model
 			<title>Document</title>
 			
 		</head>
-		<style type="text/css">
+        <style type="text/css">
+            .img-fluid{width: 300px;}
 			body{font-family: "arial";}p{text-align: justify;font-size: 11pt;color: #878788;}
 			.container {margin-right: auto;margin-left: auto; width: 100%;}
 			.col-2 {width: 16.666667%;flex: 0 0 16.666667%;}
@@ -146,11 +147,11 @@ class Model_Email extends CI_Model
 				font-size: 20pt;color: #878788;font-style: italic;font-weight: bold;
 			}
 			h3{font-size: 18pt;color: #005288;font-style: italic;font-weight: bold;}
-			.button{text-decoration:none;border-radius: 0Px;border: 2px solid #e96610;padding: 15px 75px;cursor:pointer;background-color:#e96610;color: #ffffff;}
+			.button{text-decoration: none; border-radius: 10px;border: 2px solid #e96610;padding: 15px 75px;cursor:pointer;background-color:#e96610;color: #ffffff;}
 			.button:hover{text-decoration:none;color:#fff;}
 			h4{text-align: justify;}h5{text-align: justify;}
 			</style>
-			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+			
 		<body>
 			<div class="container">
 				<div class="row d-flex justify-content-end">

@@ -150,11 +150,12 @@ class Model_Email extends CI_Model
 			.button:hover{text-decoration:none;color:#fff;}
 			h4{text-align: justify;}h5{text-align: justify;}
 			</style>
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<body>
 			<div class="container">
 				<div class="row d-flex justify-content-end">
 					<div class="col-2">
-						<img src="https://qval.admyo.com/assets/img/Qval-logo_1024x500.png" class="img-responsive" alt="">
+						<img src="https://qval.admyo.com/assets/img/Qval-logo_1024x500.png" class="img-fluid" alt="">
 					</div>
 					
 				</div>

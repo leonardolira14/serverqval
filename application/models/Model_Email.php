@@ -111,7 +111,7 @@ class Model_Email extends CI_Model
 		</html>';
 		
 		$this->email->message($body);
-		$this->email->send();
+		return $this->email->send();
 	}
 	public function Activar_Usuario($Token,$_Correo_envio,$_Nombre,$_Apellido,$_Usuario,$_Clave){
 		$this->email->to($_Correo_envio);
@@ -196,7 +196,7 @@ class Model_Email extends CI_Model
 		</html>';
 		
 		$this->email->message($body);
-		$this->email->send();
+		return $this->email->send();
 	}
 	public function bienvenida($_Correo_envio,$_Nombre,$_Apellido,$_Clave,$_Usuario,$Token){
 		$this->email->to($_Correo_envio);
@@ -292,7 +292,7 @@ class Model_Email extends CI_Model
 		</html>';
 		
 		$this->email->message($body);
-		$this->email->send();
+		return $this->email->send();
 	}
 	// cooreo para notificar al usuario que se ha dado de baja ese usuario
 	public function down_user($_Correo_envio){
@@ -372,7 +372,7 @@ class Model_Email extends CI_Model
 		</body>
 		</html>';
 		$this->email->message($body);
-		$this->email->send();
+		return $this->email->send();
 	}
 	//funcion para notificar al usuario que dio de baja a ese usuario
 	public function down_user_notification($_Correo_envio, $_Nombre,$_Apellidos){
@@ -452,7 +452,7 @@ class Model_Email extends CI_Model
 		</body>
 		</html>';
 		$this->email->message($body);
-		$this->email->send();
+		return $this->email->send();
 		
 	} 
 	

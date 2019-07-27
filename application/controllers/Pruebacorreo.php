@@ -50,7 +50,7 @@ class Pruebacorreo extends CI_Controller{
         $_Correo_envio="lira053@gmail.com";
         $_Nombre="Leonardo";
         $_Apellido="Lira";
-        $respuesta=$this->Model_Email->down_user_notification($_Correo_envio, $_Nombre,$_Apellidos);
+        $respuesta=$this->Model_Email->down_user_notification($_Correo_envio, $_Nombre,$_Apellido);
         vdebug($respuesta);
     }
 }

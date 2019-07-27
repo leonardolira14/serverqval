@@ -146,7 +146,8 @@ class Model_Email extends CI_Model
 				font-size: 20pt;color: #878788;font-style: italic;font-weight: bold;
 			}
 			h3{font-size: 18pt;color: #005288;font-style: italic;font-weight: bold;}
-			button{border-radius: 0Px;border: 2px solid #e96610;padding: 15px 75px;cursor:pointer;background-color:#e96610;color: #ffffff;}
+			.button{text-decoration:none;border-radius: 0Px;border: 2px solid #e96610;padding: 15px 75px;cursor:pointer;background-color:#e96610;color: #ffffff;}
+			.button:hover{text-decoration:none;color:#fff;}
 			h4{text-align: justify;}h5{text-align: justify;}
 			</style>
 		<body>
@@ -166,14 +167,14 @@ class Model_Email extends CI_Model
 						</div>
 						
 						<div class="col-12 text-center">
-							   <a href="https://qval.admyo.com/activarcuenta/'.$Token.'"><button type="button" >ACTIVA TU CUENTA</button></a>
+							   <a href="https://qval.admyo.com/activarcuenta/'.$Token.'" class="button">ACTIVA TU CUENTA</a>
 						</div>
-						<div class="col-12">
+						<div class="col-12 ">
 								<h5 class="text-center"><span style="font-weight: bold;color:#878788"> Haga clic en el botón</span></h5>
 						</div>
 						<div class="col-sm-12" style="margin-top:40px">
-							<h4 style="color:#878788">Usuario'.$_Usuario.'</h4>
-							<h4 style="color:#878788">Contraseña'.$_Clave.'</h4>
+							<h4 style="color:#878788">Usuario: '.$_Usuario.'</h4>
+							<h4 style="color:#878788">Contraseña: '.$_Clave.'</h4>
 						</div> 
 						<div class="col-12">
 							<h5 style="color:#878788">Dentro de qvaluation.com podrás cambiar tu contraseña en cualquier momento.</h5>

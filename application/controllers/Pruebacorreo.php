@@ -46,7 +46,7 @@ class Pruebacorreo extends CI_Controller{
         vdebug($respuesta);
     }
     //funcion para baja de usuario admin
-    public function downusernotification($_Correo_envio, $_Nombre,$_Apellidos){
+    public function downusernotification(){
         $_Correo_envio="lira053@gmail.com";
         $_Nombre="Leonardo";
         $_Apellido="Lira";

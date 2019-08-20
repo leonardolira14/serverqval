@@ -38,8 +38,9 @@ class Model_Cuestionario extends CI_Model
 	//funcion para obtener todos los cuestionarios de una empresa
 	public function getallpanel($_ID_Empresa){
 		$respuesta=$this->db->select("detallecuestionario.Notificaciones as Notificaciones,detallecuestionario.Grupo as Grupo,cuestionario.status as estado,cuestionario.IDCuestionario as numero,cuestionario.Nombre as nombre,IDDetalle as numdetalle,PerfilCalifica,PerfilCalificado,TPEmisor,TPReceptor")->from("cuestionario")->join('detallecuestionario','detallecuestionario.IDCuestionario=cuestionario.IDCuestionario')->where("IDEmpresa='$_ID_Empresa'")->get();
+		
 		if($respuesta->num_rows()===0){
-			return false;
+			return $respuesta->result_array();
 		}else{
 			$listcues=[];
 			foreach ($respuesta->result_array() as $resp) {

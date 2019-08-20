@@ -53,17 +53,12 @@ class Model_Grupo extends CI_Model
 	//funcion para obtener grupos
 	public function getGrupos($_ID_Empresa,$_Tipo){
 		$respuesta=$this->db->select("*")->where("IDEmpresa='$_ID_Empresa' and Tipo='$_Tipo'")->get("grupos");
-		if($respuesta->num_rows()===0){
-			return false;
-		}else{
 			$resultados=$respuesta->result_array();
 			foreach($resultados as $item  =>  $resultado){
 				$numero=$this->getNumMiembros($resultado["IDGrupo"],$resultado["Tipo"]);
 				$resultados[$item]["NoMiembros"]=$numero["num"];
 			}
 			return $resultados;
-			
-		}
 	}
 	public function updatestatus($_ID,$_staus){
 		$array=array("Status"=>$_staus);

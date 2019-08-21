@@ -155,7 +155,7 @@ class Cuestionario extends REST_Controller
 					$Respuestas="";
 				}
 				
-				$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$pregunta["indicador"],$pregunta["detalleindicador"]);
+				$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$pregunta["indicador"],$pregunta["detalleindicador"],$pregunta["listanotificaciones"]);
 				array_push($lista_cuestionario,$IDPregunta);
 			}
 			//ahora guardo los datos de los detalles

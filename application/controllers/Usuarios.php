@@ -193,13 +193,10 @@ class Usuarios extends REST_Controller
 				if($key==="Imagen"){
 					$ruta='./assets/img/usuarios/avatar/';
 				}
-				
 				$rutatemporal=$nombre["tmp_name"];
-				$nombreactual=$nombre["name"];
-				
+				$nombreactual=$nombre["name"];				
 				move_uploaded_file($rutatemporal, $ruta.$nombreactual);
-				
-				
+
 			}
 			
 		} 

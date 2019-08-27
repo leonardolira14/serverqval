@@ -91,3 +91,8 @@ $route["downloadresumen"]="resumen/resumensvg";
 //funcion para las notificaciones
 $route["getnotificaciones"]="Notificacion/getNotificaciones";
 $route["deletenotificacionpreg"]="Notificacion/deletepreg";
+
+//funciones para usuarios plus
+$route["getalluserplus"]="Usuariosplus/getall";
+$route["updateuserplus"]="Usuariosplus/update";
+$route["adduserplus"]="Usuariosplus/add";

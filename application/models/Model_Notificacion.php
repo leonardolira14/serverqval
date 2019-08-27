@@ -20,4 +20,14 @@ class Model_Notificacion extends CI_Model
 		}
 		
 	}
+	//funcion para obtener las notificaciones de preguntas
+	public function getAllPregunta($_Usuario,$_status)
+	{
+		$respuesta=$this->db->select('*')->where("IDUsuarioNotificacion='$_Usuario' and Status='$_status'")->get("tbnotificacionpreg");
+		return $respuesta->result_array();
+	}
+	//funcion para eliminar una notificacion
+	public function not_pregunta($IDNotificacion){
+		$this->db->where("IDNotificacion='$IDNotificacion'")->delete('tbnotificacionpreg');
+	}
 }

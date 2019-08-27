@@ -105,10 +105,18 @@ class Cuestionario extends REST_Controller
 				}else{
 					$Respuestas="";
 				}
-				if(isset($pregunta["IDPregunta"])){
-					$IDPregunta=$this->Model_Pregunta->update($pregunta["IDPregunta"],$pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$pregunta["indicador"],$pregunta["detalleindicador"]);
+				if(!isset($pregunta["indicador"])){
+					$indicador="FALSE";
+					$detalleindicador="[]";
 				}else{
-					$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$pregunta["indicador"],$pregunta["detalleindicador"]);
+					$indicador=$pregunta["indicador"];
+					$detalleindicador=$pregunta["detalleindicador"];
+				}
+				
+				if(isset($pregunta["IDPregunta"])){
+					$IDPregunta=$this->Model_Pregunta->update($pregunta["IDPregunta"],$pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$indicador,$detalleindicador,$pregunta["listanotificaciones"]);
+				}else{
+					$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$indicador,$detalleindicador,$pregunta["listanotificaciones"]);
 				}	
 				array_push($lista_cuestionario,$IDPregunta);
 				$_data["ok"]=$this->Model_Cuestionario->updatedatelle($datos["IDCuestionario"],json_encode($lista_cuestionario),$_PerfilCalifica,$_PerfilCalificado,$_TPEmisor,$_TPReceptor);
@@ -147,7 +155,7 @@ class Cuestionario extends REST_Controller
 					$Respuestas="";
 				}
 				
-				$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$pregunta["indicador"],$pregunta["detalleindicador"]);
+				$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$pregunta["indicador"],$pregunta["detalleindicador"],$pregunta["listanotificaciones"]);
 				array_push($lista_cuestionario,$IDPregunta);
 			}
 			//ahora guardo los datos de los detalles
@@ -272,7 +280,11 @@ class Cuestionario extends REST_Controller
 		$_grafica=array("labels"=>$fechas,"datos"=>array("data"=>$grafica,"label"=>'# de veces realizado el cuestioario'));
 		// ahora traigo las preguntas de ese cuestionario
 		$Lista_cuestionario=[];
-		$datosLista=json_decode($detalles_cuestionario['Cuestionario']);
+		if(strpos($detalles_cuestionario['Cuestionario'],'[')===false){
+			$datosLista=explode(',',$detalles_cuestionario['Cuestionario']);
+		}else{	
+			$datosLista=json_decode($detalles_cuestionario['Cuestionario']);
+		}
 		foreach($datosLista as $pregunta){
 			array_push($Lista_cuestionario,$this->Model_Pregunta->get_detalle_pregunta($pregunta));
 		}

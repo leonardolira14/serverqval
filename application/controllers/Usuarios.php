@@ -193,13 +193,10 @@ class Usuarios extends REST_Controller
 				if($key==="Imagen"){
 					$ruta='./assets/img/usuarios/avatar/';
 				}
-				
 				$rutatemporal=$nombre["tmp_name"];
-				$nombreactual=$nombre["name"];
-				
+				$nombreactual=$nombre["name"];				
 				move_uploaded_file($rutatemporal, $ruta.$nombreactual);
-				
-				
+
 			}
 			
 		} 
@@ -246,11 +243,16 @@ class Usuarios extends REST_Controller
 	public function borrar_post(){
 		$datos=$this->post();
 		
+		$datos_usuario= $this->Model_Usuarios->getdata($datos["IDUsuario"]);
+		$this->Model_Email->down_user($datos_usuario["Correo"]);
+		
 		//elimino los registros de usaurio
 		$_data["ok"]=$this->Model_Usuarios->delete_user($datos["IDUsuario"]);
 		//elimino las calificaciones que se hallan echo
 		$this->Model_Calificacion->delete_Calificacion_usario($datos["IDUsuario"],"Emisor");
 		$this->Model_Calificacion->delete_Calificacion_usario($datos["IDUsuario"],"Receptor");
+		
+		
 		$this->response($_data);
 	}
 	public function transferircalificaciones_post(){

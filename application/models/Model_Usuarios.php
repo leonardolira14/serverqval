@@ -96,8 +96,8 @@ class Model_Usuarios extends CI_Model
 	}
 	//funcion para egregar un nuevo usuario
 	public function save($_ID_Empresa,$_Nombre,$_Apellido,$_Puesto,$_Correo,$_Configuracion,$_Funciones,$_Usuario,$_Imagen,$_Celular,$clave){
-		$clave=md5($Clave.$this->constante);
-		$Token=md5($data["H:i:s"]);
+		$clave=md5($clave.$this->constante);
+		$Token=md5(date("d-m-Y").date("H:i:s"));
 		$datos=array(
 			"IDEmpresa"=>$_ID_Empresa,
 			"Nombre"=>$_Nombre,

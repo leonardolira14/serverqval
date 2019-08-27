@@ -96,3 +96,8 @@ $route["deletenotificacionpreg"]="Notificacion/deletepreg";
 $route["getalluserplus"]="Usuariosplus/getall";
 $route["updateuserplus"]="Usuariosplus/update";
 $route["adduserplus"]="Usuariosplus/add";
+$route["senspassuserplus"]="Usuariosplus/sendpass";
+$route["countreguserplus"]="Usuariosplus/getreg";
+$route["deleteuserplus"]="Usuariosplus/delete";
+$route["changeuserplus"]="Usuariosplus/changestatus";
+

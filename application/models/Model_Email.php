@@ -787,7 +787,9 @@ class Model_Email extends CI_Model
 		return $this->email->send();
 		
 	} 
-	
+	public function send_password_plus_user($_Correo_envio,$_Nombre,$_Apellidos,$_Clave,$_Usuario){
+
+	}
 
 	
 

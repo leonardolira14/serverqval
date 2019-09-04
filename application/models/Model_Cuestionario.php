@@ -10,6 +10,7 @@ class Model_Cuestionario extends CI_Model
 	{
 		parent::__construct();
 		$this->load->database();
+		$this->load->model("Model_Usuariosplus");
 	}
 	//funcion para obteno los registro de un cuestionario
 	public function getnumregistros($_ID_cuestionario){
@@ -74,8 +75,48 @@ class Model_Cuestionario extends CI_Model
 		return $this->db->insert_id();
 	}
 	//funcion para add detalles
-	public function savedatelle($_ID_Cuestionario,$_Cuestionario,$_PerfilCalifica,$_PerfilCalificado,$_TPEmisor,$_TPReceptor){
-		$array=array("IDCuestionario"=>$_ID_Cuestionario,"Cuestionario"=>json_encode($_Cuestionario),"PerfilCalifica"=>$_PerfilCalifica,"PerfilCalificado"=>$_PerfilCalificado,"TPEmisor"=>$_TPEmisor,"TPReceptor"=>$_TPReceptor);
+	public function savedatelle(
+		
+		$_ID_Cuestionario,
+		$_Cuestionario,
+		$_PerfilCalifica,
+		$_PerfilCalificado,
+		$_TPEmisor,
+		$_TPReceptor,
+		$_Tipo_App,
+		$_Lista_Empresas,
+		$_IDEmpresa_emisora
+		){
+		if($_Tipo_App==="1"){
+			foreach($_Lista_Empresas as $empresa){
+				// obtengo los usuarios que pertenescan a esa empresa
+				$_lista_usuarios=$this->Model_Usuariosplus->getAll_empresa($empresa["IDCliente"]);
+				foreach($_Lista_Empresas as $usuario){
+					$array=array(
+						"IDEmpresa"=>$empresa["IDCliente"],
+						"IDUsuario"=>$usuario["IDUsuario"],
+						"IDCuestionario"=>$_ID_Cuestionario,
+						"Status"=>0,
+						"Fecha_Envio"=>date("Y-m-d"),
+						"Hora_Envio"=>date("h:i:s"),
+						"Fecha_Respuesta"=>'',
+						"Hora_Respuesta"=>'',
+						"IDEmpresa_Emisora"=>$_IDEmpresa_emisora
+					);
+					$this->db->insert("tb_cuestionarios_usuarios_plus",$array);
+				}
+			}
+		}	
+		$array=array(
+			"IDCuestionario"=>$_ID_Cuestionario,
+			"Cuestionario"=>json_encode($_Cuestionario),
+			"PerfilCalifica"=>$_PerfilCalifica,
+			"PerfilCalificado"=>$_PerfilCalificado,
+			"TPEmisor"=>$_TPEmisor,
+			"TPReceptor"=>$_TPReceptor,
+			"Tipoapp"=>$_Tipo_App,
+			"Lista_empresas"=> json_encode($_Lista_Empresas)
+		);
 		$this->db->insert("detallecuestionario",$array);
 	}
 	//funcion para obtener 
@@ -98,9 +139,93 @@ class Model_Cuestionario extends CI_Model
 		$array=array("Nombre"=>$_Nombre,"IDEmpresa"=>$_ID_Empresa);
 		$this->db->where("IDCuestionario='$_ID_Cuestionario'")->update("cuestionario",$array);
 	}
+	function unique_multidim_array($data) { 
+		
+		$final = array(); 
+		foreach ($data as $array) 
+		{ 
+			if(!in_array($array, $final))
+			{ 
+				$final[] = $array; 
+			} 
+		} 
+		return $final;
+	} 
 	//funcion para modifar detalles
-	public function updatedatelle($_ID_Cuestionario,$_Cuestionario,$_PerfilCalifica,$_PerfilCalificado,$_TPEmisor,$_TPReceptor){
-		$array=array("Cuestionario"=>$_Cuestionario,"PerfilCalifica"=>$_PerfilCalifica,"PerfilCalificado"=>$_PerfilCalificado,"TPEmisor"=>$_TPEmisor,"TPReceptor"=>$_TPReceptor);
+	public function updatedatelle(
+		$_ID_Cuestionario,
+		$_Cuestionario,
+		$_PerfilCalifica,
+		$_PerfilCalificado,
+		$_TPEmisor,
+		$_TPReceptor,
+		$_Tipo_App,
+		$_Lista_Empresas
+		){
+		$flag_disminuir=false;
+		$flag_aumentar=false;
+		// ahora obtengo la lista anterior y verifico si se elimino o se agrego 
+		$respuesta=$this->db->select('Lista_empresas')->where("IDCuestionario='$_ID_Cuestionario'")->get("detallecuestionario");
+		$_Lista_Empresas_anterior=json_decode($respuesta->row_array()["Lista_empresas"]);
+		$_Lista_Empresas_anterior = json_decode(json_encode($_Lista_Empresas_anterior), True);
+		$d=[];
+		//ahora comparo si se aumento o se diminuyo
+		if($_Tipo_App==="0"){
+			//si la app ahroa se contestara por qval app no tiene caso tener los registros y los elimino de la tabla
+			$_Lista_Empresas=[];
+			foreach($_Lista_Empresas_anterior as $empresa){
+				//ahora elimino todos los que pertenescan a esa empresa
+				$this->db->where("IDEmpresa='".$empresa["IDCliente"]."'")->delete("tb_cuestionarios_usuarios_plus");
+			}
+
+		}else{
+			if(count($_Lista_Empresas_anterior)<>count($_Lista_Empresas)){
+				if(count($_Lista_Empresas_anterior)<count($_Lista_Empresas)){
+					// aumentaron de empresas
+					$flag_aumentar=true;
+					$d = array_map('unserialize',array_diff(array_map('serialize', $_Lista_Empresas), array_map('serialize', $_Lista_Empresas_anterior)));
+					// quito de la tabla a todos los que pertenescan a esa empresa
+					foreach($d as $empresa){
+						// obtengo los usuarios que pertenescan a esa empresa
+						$_lista_usuarios=$this->Model_Usuariosplus->getAll_empresa($empresa["IDCliente"]);
+						foreach($_lista_usuarios as $usuario){
+							$array=array(
+								"IDEmpresa"=>$empresa["IDCliente"],
+								"IDUsuario"=>$usuario["IDUsuario"],
+								"IDCuestionario"=>$_ID_Cuestionario,
+								"Status"=>0,
+								"Fecha_Envio"=>date("Y-m-d"),
+								"Hora_Envio"=>date("h:i:s"),
+								"Fecha_Respuesta"=>'',
+								"Hora_Respuesta"=>'',
+							);
+							$this->db->insert("tb_cuestionarios_usuarios_plus",$array);
+						}
+					}	
+					
+					
+				}else if(count($_Lista_Empresas_anterior)>count($_Lista_Empresas)){
+					// disminuyo de empresas
+					$flag_disminuir=true;	
+					$d = array_map('unserialize',array_diff(array_map('serialize', $_Lista_Empresas_anterior ), array_map('serialize', $_Lista_Empresas)));
+					foreach($d as $empresa){
+						//ahora elimino todos los que pertenescan a esa empresa
+						$this->db->where("IDEmpresa='".$empresa["IDCliente"]."'")->delete("tb_cuestionarios_usuarios_plus");
+						
+					}			
+				}			
+			}
+		}
+		
+		$array=array(
+			"Cuestionario"=>$_Cuestionario,
+			"PerfilCalifica"=>$_PerfilCalifica,
+			"PerfilCalificado"=>$_PerfilCalificado,
+			"TPEmisor"=>$_TPEmisor,
+			"TPReceptor"=>$_TPReceptor,
+			"Tipoapp"=>$_Tipo_App,
+			"Lista_empresas"=> json_encode($_Lista_Empresas)
+		);
 		return $this->db->where("IDCuestionario='$_ID_Cuestionario'")->update("detallecuestionario",$array);
 	}
 	public function  delete($_ID_Cuestionario,$_status){

@@ -130,4 +130,32 @@ class Usuariosplus extends REST_Controller
         $this->response($_data);
     }
 
+    // Subir avatar 
+    public function uploadavatarapp_post(){
+        if(count($_FILES)!==0){
+            $_Imagen=$_FILES["archivo"]["name"];
+            $ruta='./assets/img/usuarios/avatar/usuariosplus/';
+            $rutatemporal=$_FILES["archivo"]["tmp_name"];
+            $nombreactual=$_FILES["archivo"]["name"];	
+            try {
+                if(! move_uploaded_file($rutatemporal, $ruta.$nombreactual)){
+                    $_data["code"]=1991;
+                    $_data["ok"]="ERROR";
+                    $_data["result"]="No se puede subir el archivo". $nombreactual;
+		            $this->response($_data,400);
+                }
+                // ahora actualizo los el nombre de la foto
+                $_data["code"]=0;
+                $_data["ok"]="SUCCESS";
+                $this->response($_data,200);
+            } catch (Exception $e) {
+						$_data["code"]=1991;
+						$_data["ok"]="ERROR";
+                        $_data["result"]=$e->getMessage();
+                        $this->response($_data,400);
+			}
+         }
+         
+    }
+
 }

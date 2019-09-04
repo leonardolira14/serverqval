@@ -43,6 +43,8 @@ $route["updateclient"]="cliente/update";
 $route["deleteclient"]="cliente/delete";
 $route["numregistrosclie"]="cliente/numregistro";
 $route["borrarcliente"]="cliente/borrar";
+$route["numlistcliente"]="cliente/numlistcliente";
+
 
 $route["getuser"]="cliente/getuser";
 $route["getallquestionary"]="cuestionario/getall";
@@ -71,7 +73,7 @@ $route["getdatosencuesta"]="cuestionario/getdatosencuesta";
 $route["addcuesnotfquestionary"]="cuestionario/updatenotificacion";
 $route["addgrupoencuesta"]='cuestionario/upsategrupo';
 $route["addborradorencuesta"]='cuestionario/addborradorencuesta';
-
+$route["uparchivo"]='cuestionario/uparchivo';
 
 $route["getallask"]="pregunta/getall";
 $route["updateask"]="pregunta/update";
@@ -100,4 +102,6 @@ $route["senspassuserplus"]="Usuariosplus/sendpass";
 $route["countreguserplus"]="Usuariosplus/getreg";
 $route["deleteuserplus"]="Usuariosplus/delete";
 $route["changeuserplus"]="Usuariosplus/changestatus";
+$route["cargaravatar"]="Usuariosplus/uploadavatarapp";
+
 

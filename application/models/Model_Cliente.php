@@ -67,5 +67,12 @@ class Model_Cliente extends CI_Model
 	public function delete_clie($_ID_Usuario){
 		$this->db->where("IDCliente='$_ID_Usuario'")->delete("clientes");
 	}
-	
+	//funcuion para obtener las empresas que pertenescan a un grupo
+	public function num_reg($_ID_Grupo,$_ID_Empresa){
+		$respuesta=$this->db->select("Nombre,IDCliente")->where("IDConfig='$_ID_Grupo' and IDEmpresa='$_ID_Empresa'")->get("clientes");
+		$_data["numero"]=$respuesta->num_rows();
+		$_data["empresas"]=$respuesta->result_array();
+		return $_data;
+		
+	}
 }

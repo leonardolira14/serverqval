@@ -100,4 +100,10 @@ class Cliente extends REST_Controller
 		$_data["ok"]=$this->Model_Cliente->updatestaus($datos["id"],$datos["status"]);
 		$this->response($_data);
 	}
+	//funcion para obtener las empresas que pertenecen a un grupo
+	public function numlistcliente_post(){
+		$datos=$this->post();
+		$data["response"]=$this->Model_Cliente->num_reg($datos["IDGrupo"],$datos["IDEmpresa"]);
+		$this->response($data);
+	}
 }

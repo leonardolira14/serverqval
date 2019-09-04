@@ -65,7 +65,7 @@ class Model_Usuariosplus extends CI_Model
     }
     public function delete($_IDUsuario,$_IDEmpresa){
        // primero guardo los datos en los que aparece
-        $respuesta=$this->db->select("*")->where("TReceptor='E'and IDReceptor='$_IDEmpresa'  and IDReceptor='$_IDUsuario'")->get('tbcalificaciones');
+        $respuesta=$this->db->select("*")->where("TReceptor='E'and IDReceptor='$_IDEmpresa'  and IDUsuarioReceptor='$_IDUsuario'")->get('tbcalificaciones');
        
         //ahora elimino los detalles de calificaciones
         foreach ($respuesta->result_array() as $key => $item) {
@@ -74,7 +74,7 @@ class Model_Usuariosplus extends CI_Model
         }
 
         //ahora elimino los registros de calificaciones
-        $this->db->where("TReceptor='E'and IDReceptor='$_IDEmpresa'  and IDReceptor='$_IDUsuario'")->delete('tbcalificaciones');
+        $this->db->where("TReceptor='E'and IDReceptor='$_IDEmpresa'  and IDUsuarioReceptor='$_IDUsuario'")->delete('tbcalificaciones');
 
         //ahora elimino el usuario
        return $this->db->where("IDUsuario='$_IDEmpresa'  ")->delete('tbusuarios_plus');
@@ -83,6 +83,13 @@ class Model_Usuariosplus extends CI_Model
     //funcion para activar o desacativar un suario 
     public function update_status($_IDUsuario,$_Status){
         $array=array("Status"=>$_Status);
+        return $this->db->where("IDUsuario='$_IDUsuario'")->update("tbusuarios_plus",$array);
+    }
+    
+
+    //funcion para solo actualizar la foto
+    public function update_fot($_Foto){
+        $array=array("Foto"=>$_Foto);
         return $this->db->where("IDUsuario='$_IDUsuario'")->update("tbusuarios_plus",$array);
     }
     

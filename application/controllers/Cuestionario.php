@@ -19,6 +19,7 @@ class Cuestionario extends REST_Controller
 		$this->load->model("Model_Pregunta");
 		$this->load->model("Model_Calificacion");
 		$this->load->model("Model_Usuarios");
+		$this->load->model("Model_Cliente");
 
 	}
 	public function borrar_post(){
@@ -119,7 +120,16 @@ class Cuestionario extends REST_Controller
 					$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$indicador,$detalleindicador,$pregunta["listanotificaciones"]);
 				}	
 				array_push($lista_cuestionario,$IDPregunta);
-				$_data["ok"]=$this->Model_Cuestionario->updatedatelle($datos["IDCuestionario"],json_encode($lista_cuestionario),$_PerfilCalifica,$_PerfilCalificado,$_TPEmisor,$_TPReceptor);
+				$_data["ok"]=$this->Model_Cuestionario->updatedatelle(
+					$datos["IDCuestionario"],
+					json_encode($lista_cuestionario),
+					$_PerfilCalifica,
+					$_PerfilCalificado,
+					$_TPEmisor,
+					$_TPReceptor,
+					$datos["Tipoapp"],
+					$datos["list_empresas"]
+				);
 				$this->response($_data);
 			}
 		}else {
@@ -159,7 +169,17 @@ class Cuestionario extends REST_Controller
 				array_push($lista_cuestionario,$IDPregunta);
 			}
 			//ahora guardo los datos de los detalles
-			$_data["ok"]= $this->Model_Cuestionario->savedatelle($IDCuestionario,$lista_cuestionario,$_PerfilCalifica,$_PerfilCalificado,$_TPEmisor,$_TPReceptor);
+			$_data["ok"]= $this->Model_Cuestionario->savedatelle(
+				$IDCuestionario,
+				$lista_cuestionario,
+				$_PerfilCalifica,
+				$_PerfilCalificado,
+				$_TPEmisor,
+				$_TPReceptor,
+				$datos["Tipoapp"],
+				$datos["list_empresas"],
+				$datos["IDEmpresa"]
+			);
 			$this->response($_data);
 		}
 		
@@ -288,6 +308,7 @@ class Cuestionario extends REST_Controller
 		foreach($datosLista as $pregunta){
 			array_push($Lista_cuestionario,$this->Model_Pregunta->get_detalle_pregunta($pregunta));
 		}
+		$lista_empresas_grupo=$this->Model_Cliente->num_reg($detalles_cuestionario["PerfilCalificado"],$datoscuestionario["IDEmpresa"]);
 		// hora mando los datos
 		$_data_print=array(
 			"datos_cuestionario"=>$datoscuestionario,
@@ -297,9 +318,38 @@ class Cuestionario extends REST_Controller
 			"datos_Receptor"=>$datos_receptor,
 			"numero_respuestas"=>$numero_respuestas,
 			"grafica"=>$_grafica,
-			"lista_preguntas"=>$Lista_cuestionario
+			"lista_preguntas"=>$Lista_cuestionario,
+			"lista_empresas_grupo"=>$lista_empresas_grupo
 			
 		);
 		$this->response($_data_print);
+	}
+
+	//funcion para subir el archivo a el servidor
+	public function uparchivo_post(){	
+		if(isset($_FILES["Archivo"])){
+			$ruta='./assets/archivos/';
+			$archivo=$_FILES["Archivo"];
+		}
+		if(isset($_FILES["Avatar"])){
+			$ruta='./assets/img/usuarios/avatar/usuariosplus/';
+			$archivo=$_FILES["Avatar"];
+		}
+		$rutatemporal=$archivo["tmp_name"];
+		$nombreactual=$archivo["name"];
+		try{
+			$_data["response"]="";
+			if (!move_uploaded_file($rutatemporal, $ruta.$nombreactual)) {
+				$_data["ok"]="true";
+				$_data["response"]= "ok";
+				throw new Exception('Could not move file');
+				
+			}
+		}catch(Exception $e){
+			$_data["ok"]="false";
+			$_data["error"]= $e->getMessage();
+			$this->response($_data,400);
+		}
+	$this->response($_data,200);	
 	}
 }

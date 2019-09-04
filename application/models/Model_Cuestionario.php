@@ -160,7 +160,8 @@ class Model_Cuestionario extends CI_Model
 		$_TPEmisor,
 		$_TPReceptor,
 		$_Tipo_App,
-		$_Lista_Empresas
+		$_Lista_Empresas,
+		$_Empresa_emisora
 		){
 		$flag_disminuir=false;
 		$flag_aumentar=false;
@@ -198,6 +199,7 @@ class Model_Cuestionario extends CI_Model
 								"Hora_Envio"=>date("h:i:s"),
 								"Fecha_Respuesta"=>'',
 								"Hora_Respuesta"=>'',
+								"IDEmpresa_Emisora"=>$_Empresa_emisora
 							);
 							$this->db->insert("tb_cuestionarios_usuarios_plus",$array);
 						}

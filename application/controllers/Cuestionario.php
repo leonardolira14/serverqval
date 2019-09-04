@@ -128,7 +128,8 @@ class Cuestionario extends REST_Controller
 					$_TPEmisor,
 					$_TPReceptor,
 					$datos["Tipoapp"],
-					$datos["list_empresas"]
+					$datos["list_empresas"],
+					$datos["IDEmpresa"]
 				);
 				$this->response($_data);
 			}

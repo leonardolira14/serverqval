@@ -164,4 +164,10 @@ class Model_Usuarios extends CI_Model
 			return $this->db->where("IDUsuario='".$datos_usuario['IDUsuario']."'")->update("usuario",array("Est"=>1));
 		}
 	}
+
+	//funcion para modificar el avatar
+	public function update_avatar($IDUsuario,$Foto){
+		$array=array("Imagen"=>$Foto);
+		$this->db->where("IDUsuario='$IDUsuario'")->update("usuario",$array);
+	}
 }

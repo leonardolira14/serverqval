@@ -46,7 +46,7 @@ $db['admyo'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-$db['defaultl'] = array(
+$db['defaultt'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => 'root',

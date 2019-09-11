@@ -15,6 +15,7 @@ $route['getdatos']="general/getdatos";
 $route['Notificacion']="notificacion/notificaciones";
 $route['general']='general/general';
 $route['updateus']='general/updatedateus';
+$route['updateavatar']='general/updatedaavatar';
 $route['updateempresa']='empresa/updateempresa';
 
 

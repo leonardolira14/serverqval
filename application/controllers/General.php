@@ -104,6 +104,39 @@ class General extends REST_Controller
 		$this->response($_data);
 		
 	}
+	//funcio para modificar el avatar desde la app
+	public function updatedaavatar_post(){
+		
+		$datos=$this->post();
+		$IDUsuario=$datos["IDUsuario"];
+		$avatar=$_FILES["logo"];
+		$ruta='./assets/img/usuarios/avatar/';
+		$rutatemporal=$avatar["tmp_name"];
+		$nombreactual=$avatar["name"];
+		try {
+			if(! move_uploaded_file($rutatemporal, $ruta.$nombreactual)){
+				$_data["code"]=1991;
+				$_data["ok"]="ERROR";
+				$_data["result"]="No se puede subir el archivo". $nombreactual;
+				$this->response($_data,400);
+			}
+			// ahora actualizo los el nombre de la foto
+			$_data["ok"]=$this->Model_Usuarios->update_avatar($IDUsuario,$nombreactual);
+			$_data["code"]=0;
+			$_data["ok"]="SUCCESS";
+			$this->response($_data,200);
+		} catch (Exception $e) {
+					$_data["code"]=1991;
+					$_data["ok"]="ERROR";
+					$_data["result"]=$e->getMessage();
+					$this->response($_data,400);
+		}
+		
+		
+	}
+
+
+	
 	//FUNCIÓN PARA CREAR LA MINIATURA A LA MEDIDA QUE LE DIGAMOS
     public function create_thumbnail($filename,$ruta,$tipo){
         $config['image_library'] = 'gd2';

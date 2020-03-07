@@ -6,8 +6,8 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'ec2-18-188-195-242.us-east-2.compute.amazonaws.com',
-	'username' => 'root',
+	'hostname' => '3.133.125.103',
+	'username' => 'administradoronline',
 	'password' => 'admyo246',
 	'database' => 'qval',
 	'dbdriver' => 'mysqli',
@@ -27,10 +27,10 @@ $db['default'] = array(
 );
 $db['admyo'] = array(
 	'dsn'	=> '',
-	'hostname' => 'ec2-18-188-195-242.us-east-2.compute.amazonaws.com',
-	'username' => 'root',
+	'hostname' => '3.133.125.103',
+	'username' => 'administradoronline',
 	'password' => 'admyo246',
-	'database' => 'testadmyo',
+	'database' => 'admyo',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -46,7 +46,7 @@ $db['admyo'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-$db['defaultt'] = array(
+$db['defaultl'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => 'root',

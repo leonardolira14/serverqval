@@ -23,12 +23,12 @@ date_default_timezone_set('America/Mexico_City'); #Línea agregada
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://testqval.admyo.com/server_qval/';
+$config['base_url'] = 'https://backend.qvaluation.com/';
 
 //$config['base_url'] = 'http://localhost/qval/qval_web/serverqval/';
 
 //$config['base_url'] = 'http://localhost/qval/qval_web/serverqval/';
-//$config['base_url'] = 'http://localhost/qval/web/serverqval/';
+// $config['base_url'] = 'http://localhost/qval/web/serverqval/';
 /*
 |--------------------------------------------------------------------------
 | Index File

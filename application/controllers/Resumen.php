@@ -74,7 +74,7 @@ class Resumen extends REST_Controller
 					break;
 
 			}
-			array_push($tabla,array("pregunta"=>$detall["Pregunta"],"respuesta"=>$detall["Respuesta"],"vecescontestada"=>$num_veces_contestadas,"numrespuestascorrectas"=>$num_de_respuestas_correctas));
+			array_push($tabla,array("Forma"=>$detall["Forma"],"IDPreguta"=>$detall["IDPregunta"],"pregunta"=>$detall["Pregunta"],"respuesta"=>$detall["Respuesta"],"vecescontestada"=>$num_veces_contestadas,"numrespuestascorrectas"=>$num_de_respuestas_correctas));
 			
 		}
 		$_data["table"]=$tabla;
@@ -178,5 +178,71 @@ class Resumen extends REST_Controller
 		// $this->response($titulos);
 		converter_cvs($tabla,"Resumen_Qval".$datos["fech"],$titulos);
 		$this->response($_data["detalles"]["dialogo"]);
+	}
+	public function detallepregunta_post(){
+		$datos=$this->post();
+		
+		// obtengo los rangos de fechas 
+		if($datos['tiempo']==='R'){
+			$fechas = _fechas_array($datos['tiempo'],$datos['Rangos'][0],$datos['Rangos'][1]);
+		}else{
+			$fechas = _fechas_array($datos['tiempo'],'01-01-2021','27-03-2021');
+		}
+		
+		
+		//obtengo los datos de la pregunta
+		$_datos_pregunta = $this->Model_Pregunta->get_detalle_pregunta($datos['idPregunta']);
+		//vdebug($_datos_pregunta);
+		$_respuestas = _respuestas_array($_datos_pregunta['Forma'],$_datos_pregunta['Respuestas'] );
+		
+		
+		
+		if($_datos_pregunta['Forma'] ==="SI/NO" || $_datos_pregunta['Forma'] ==="SI/NO/NA" || $_datos_pregunta['Forma'] === "SI/NO/NS" || $_datos_pregunta['Forma'] === "ML" || $_datos_pregunta['Forma'] === "MLC" ){
+			$data_= array_flip($_respuestas);
+			$data_ = _conbrter_array($data_);
+			
+			foreach ($fechas as $fecha){
+				foreach($_respuestas as $respuesta){
+					$datos_pregunta = $this->Model_Pregunta-> respuestas_fechas($datos['idPregunta'],$datos['cuestionario'],$fecha,$respuesta,$_datos_pregunta['Forma']);
+					array_push($data_[$respuesta],$datos_pregunta);
+					
+				}
+				
+			}
+			$greficos=[];
+			foreach($data_ as $key=>$item){
+				$object = new stdClass();
+				$object->data = $item;
+				$object->label = $key;
+				array_push($greficos,$object);
+		}
+		}
+		
+		if($_datos_pregunta['Forma'] ==="NUMERO" || $_datos_pregunta['Forma'] ==="DESLIZA" || $_datos_pregunta['Forma'] === "START" ){
+			$data_=[];
+			foreach ($fechas as $fecha){
+				$datos_pregunta = $this->Model_Pregunta-> respuestas_fechas($datos['idPregunta'],$datos['cuestionario'],$fecha,'',$_datos_pregunta['Forma']);
+				
+				array_push($data_,$datos_pregunta);
+			}
+				$greficos=[];
+				$object = new stdClass();
+				$object->data = $data_;
+				$object->label = 'Media';
+				array_push($greficos,$object);
+		
+		}
+		//ahora formo los graficos
+		
+		
+		
+		$data['ok'] =true;
+		$data['datagrafica'] = $greficos;
+		$data['datalabel'] = $fechas;
+		$data['pregunta'] = $_datos_pregunta;
+		
+		
+		
+		$this->response($data,200);
 	}
 }

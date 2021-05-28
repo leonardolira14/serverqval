@@ -169,6 +169,8 @@ class Cuestionario extends REST_Controller
 				$IDPregunta=$this->Model_Pregunta->save($pregunta["Pregunta"],$pregunta["Forma"],$pregunta["Frecuencia"],$pregunta["Peso"],$Respuesta,$Respuestas,$pregunta["Obligatoria"],$pregunta["indicador"],$pregunta["detalleindicador"],$pregunta["listanotificaciones"]);
 				array_push($lista_cuestionario,$IDPregunta);
 			}
+			$datos["list_empresas"] =[];
+			//vdebug($datos);
 			//ahora guardo los datos de los detalles
 			$_data["ok"]= $this->Model_Cuestionario->savedatelle(
 				$IDCuestionario,

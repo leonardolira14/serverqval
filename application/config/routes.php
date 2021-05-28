@@ -91,6 +91,9 @@ $route["getdetailsresumen"]="resumen/getdetailstable";
 $route["downloaddetall"]="resumen/detallessvg";
 $route["downloadresumen"]="resumen/resumensvg";
 
+// rutas para las grafica por pregunta
+$route['detalleprunta'] = "resumen/detallepregunta";
+
 //funcion para las notificaciones
 $route["getnotificaciones"]="Notificacion/getNotificaciones";
 $route["deletenotificacionpreg"]="Notificacion/deletepreg";

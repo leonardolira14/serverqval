@@ -84,7 +84,7 @@ class Model_Cuestionario extends CI_Model
 		$_TPEmisor,
 		$_TPReceptor,
 		$_Tipo_App,
-		$_Lista_Empresas,
+		$_Lista_Empresas=[],
 		$_IDEmpresa_emisora
 		){
 		if($_Tipo_App==="1"){
@@ -321,4 +321,6 @@ class Model_Cuestionario extends CI_Model
 			
 		}
 	}
+
+
 }

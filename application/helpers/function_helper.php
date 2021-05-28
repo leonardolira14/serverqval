@@ -27,6 +27,77 @@ if(!function_exists("genereclabe"))
 		}
 
 }
+if(!function_exists("_conbrter_array")){
+	function _conbrter_array($array){
+		foreach($array as $key=>$item){
+			$array[$key]=[];
+		}
+		return $array;
+	}
+}
+
+
+// funcion para el array  de preguntas
+
+
+if(!function_exists("_respuestas_array")){
+	function _respuestas_array($tipo,$respuestas){
+		$array = [];
+		if($tipo ==="SI/NO" ){
+			$array = ['SI','NO'];
+		}
+		if($tipo ==="SI/NO/NA" ){
+			$array = ['SI','NO','NA'];
+		}
+		if($tipo === "SI/NO/NS"){
+			$array = ['SI','NO','NS'];
+		}
+		if($tipo === "MLC" || $tipo === "ML"){
+			$array = $respuestas;
+		}
+		return $array;
+	}
+}
+
+
+// funcion para array de fechas 
+
+if(!function_exists("_fechas_array")){
+	function _fechas_array($tiempo,$fI,$fF){
+		$fechas=[];
+		if($tiempo === 'M'){
+			for($i=30;$i>=0;$i--){
+				$cade = '-'.$i.' days';
+				array_push($fechas,date('d-m-Y', strtotime(date('d-m-Y'). $cade)));
+			}
+		}
+
+		if($tiempo === 'A'){
+			$mes_actual = (int)date('m');
+			for($i = 1; $i<=$mes_actual;$i++){
+				if($i<10){
+					$mes = '0'.$i;
+				}else{
+					$mes = $i;
+				}
+				array_push($fechas,$mes.'-'.date('Y'));
+			}
+			
+		}
+
+		if($tiempo === 'R'){
+			$fecha1= new DateTime($fI);
+			$fecha2= new DateTime($fF);
+			$diff = $fecha1->diff($fecha2);
+			$dias = $diff->days;
+			for($i=0;$i<=$dias;$i++){
+				$cade = '+'.$i.' days';
+				array_push($fechas,date('d-m-Y', strtotime($fI. $cade)));
+			}
+		}
+		return $fechas;
+	}
+}
 if(!function_exists("_compracion"))
 {
 		function _comparacion($numero1,$numero2)

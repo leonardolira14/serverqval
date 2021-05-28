@@ -172,5 +172,27 @@ class Model_Pregunta extends CI_Model
 			$this->db->insert("tbbancopreguntas",$array);
 		}
 		return true;
-	}		
+	}	
+		//funcion para obtener el nunumero de respuestas que ha obtenedo una pregunta en una fecha
+		public function respuestas_fechas($IDPregunta,$IDCuestionario,$fecha,$respuesta,$tipo){
+			//vdebug($tipo);
+			if($tipo ==="SI/NO" || $tipo ==="SI/NO/NA" || $tipo === "SI/NO/NS" || $tipo === "ML" || $tipo === "MLC" ){
+				$respuesta = $this->db->select('count(*) as num')->join('detallecalificacion','detallecalificacion.IDValora =tbcalificaciones.IDCalificacion')->where("Respuesta='$respuesta' and IDPregunta='$IDPregunta' and DATE(Fecha) BETWEEN '$fecha' AND '$fecha' and IDCuestionario='$IDCuestionario'")->get('tbcalificaciones');
+				return $respuesta->result_array()[0]['num'];
+			}
+
+			if($tipo ==="NUMERO" || $tipo ==="START" || $tipo === "DESLIZA"){
+				
+				$respuesta = $this->db->select('AVG(Respuesta) as num')->join('detallecalificacion','detallecalificacion.IDValora =tbcalificaciones.IDCalificacion')->where("IDPregunta='$IDPregunta' and DATE(Fecha) BETWEEN '$fecha' AND '$fecha' and IDCuestionario='$IDCuestionario'")->get('tbcalificaciones');
+				if($respuesta->result_array()[0]['num'] ==='' || $respuesta->result_array()[0]['num']===null){
+					return 0;
+				}else{
+					return $respuesta->result_array()[0]['num'];
+				}
+				
+			}
+			
+			
+			
+		}	
 }
